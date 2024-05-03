@@ -15,8 +15,7 @@ public class CouponController {
     @Autowired
     private CouponRepository couponRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+
 
     // View all coupons
     @GetMapping("/coupons")

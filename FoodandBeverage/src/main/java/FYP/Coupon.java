@@ -38,7 +38,8 @@ public class Coupon {
     // Date fields
     private Date issueDate;
     private Date expiryDate;
-
+    
+    
     // Default constructor
     public Coupon() {
         // Initialize dates
