@@ -1,11 +1,11 @@
 package FYP;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -15,63 +15,64 @@ public class VendorController {
     @Autowired
     private VendorRepository vendorRepository;
 
-    // View all vendors
     @GetMapping("/vendors")
     public String viewVendors(Model model) {
+        // Retrieve all vendors from the database
         List<Vendor> listVendors = vendorRepository.findAll();
+
+        // Add the list of vendors to the model
         model.addAttribute("listVendors", listVendors);
+        
+        // Return the view to display the list of vendors
         return "view_vendors";
     }
 
-    // Add a new vendor (form page)
+    // Add new vendor
     @GetMapping("/vendors/add")
-    public String addVendor(Model model) {
+    public String showAddVendorForm(Model model) {
+        // Create a new Vendor object to bind the form data
         model.addAttribute("vendor", new Vendor());
         return "add_vendor";
     }
 
-    // Save a new vendor
     @PostMapping("/vendors/save")
-    public ResponseEntity<Vendor> saveVendor(@RequestBody Vendor vendor) {
-        Vendor savedVendor = vendorRepository.save(vendor);
-        return new ResponseEntity<>(savedVendor, HttpStatus.CREATED);
+    public String saveVendor(Vendor vendor) {
+        // Save the new vendor to the database
+        vendorRepository.save(vendor);
+        
+        // Redirect to the vendors page to see the updated list
+        return "redirect:/vendors";
     }
 
-    // Edit an existing vendor (form page)
+    // Edit existing vendor
     @GetMapping("/vendors/edit/{id}")
-    public String editVendor(@PathVariable int id, Model model) {
-        Vendor vendor = vendorRepository.findById(id).orElse(null);
+    public String editVendor(@PathVariable("id") Integer id, Model model) {
+        // Retrieve the vendor by ID
+        Vendor vendor = vendorRepository.getReferenceById(id);
+        
+        // Add the vendor to the model
         model.addAttribute("vendor", vendor);
+        
+        // Return the view to edit the vendor
         return "edit_vendor";
     }
 
-    // Save updated vendor
     @PostMapping("/vendors/edit/{id}")
-    public ResponseEntity<Vendor> saveUpdatedVendor(@PathVariable int id, @RequestBody Vendor updatedVendor) {
-        if (vendorRepository.existsById(id)) {
-            // Update the existing vendor with the new data
-            updatedVendor.setVendorID(id);
-            Vendor savedVendor = vendorRepository.save(updatedVendor);
-            return new ResponseEntity<>(savedVendor, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public String saveUpdatedVendor(@PathVariable("id") Integer id, Vendor vendor) {
+        // Save the updated vendor to the database
+        vendorRepository.save(vendor);
+        
+        // Redirect to the vendors page to see the updated list
+        return "redirect:/vendors";
     }
 
-    // Delete a vendor
+    // Delete vendor
     @GetMapping("/vendors/delete/{id}")
-    public ResponseEntity<Void> deleteVendor(@PathVariable int id) {
-        if (vendorRepository.existsById(id)) {
-            vendorRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    // View single vendor
-    @GetMapping("/vendors/{id}")
-    public String viewSingleVendor(@PathVariable int id, Model model) {
-        Vendor vendor = vendorRepository.findById(id).orElse(null);
-        model.addAttribute("vendor", vendor);
-        return "view_single_vendor";
+    public String deleteVendor(@PathVariable("id") Integer id) {
+        // Delete the vendor by ID
+        vendorRepository.deleteById(id);
+        
+        // Redirect to the vendors page to see the updated list
+        return "redirect:/vendors";
     }
 }
