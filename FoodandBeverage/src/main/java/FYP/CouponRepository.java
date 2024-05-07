@@ -19,12 +19,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface CouponRepository extends JpaRepository<Coupon, Integer> {
-    // JpaRepository provides default CRUD methods
-
-    // Additional custom query methods can be defined here, for example:
-    List<Coupon> findByVendorID(int vendorID);
-    List<Coupon> findByFoodID(int foodID);
-    List<Coupon> findByClaimantID(int claimantID);
-    // Add more methods as needed
+    
 }
 
