@@ -1,47 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Add Coupon</title>
-    <!-- Add any necessary CSS/JS files -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
 </head>
+
 <body>
-    <h1>Add Coupon</h1>
-    <form action="/coupons/save" method="POST">
-        <!-- CSRF token if needed -->
-        <!-- <input type="hidden" name="_csrf" value="${_csrf.token}"> -->
+    <div class="container">
+        <h1>Add Coupon</h1>
 
-        <div>
-            <label for="foodID">Food ID:</label>
-            <input type="number" id="foodID" name="foodID" required>
-        </div>
+        <form th:action="@{/coupons/save}" method="post" th:object="${coupon}">
+            <!-- Vendor Dropdown -->
+            <div class="form-group">
+                <label for="vendor">Vendor</label>
+                <select class="form-control" id="vendor" name="vendor" th:field="*{vendor}" required>
+                    <option th:each="vendor : ${venList}" th:value="${vendor.vendorID}" th:text="${vendor.name}"></option>
+                </select>
+            </div>
+            
+            <!-- Status Field -->
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status" th:field="*{status}">
+                    <option th:value="true" th:text="Active"></option>
+                    <option th:value="false" th:text="Inactive"></option>
+                </select>
+            </div>
+            
+            
 
-        <div>
-            <label for="issuerID">Issuer ID:</label>
-            <input type="number" id="issuerID" name="issuerID" required>
-        </div>
-
-        <div>
-            <label for="claimantID">Claimant ID:</label>
-            <input type="number" id="claimantID" name="claimantID">
-        </div>
-
-        <div>
-            <label for="vendorID">Vendor ID:</label>
-            <select id="vendorID" name="vendorID" required>
-                <option value="">--Select a vendor--</option>
-                <!-- Loop through the vendors and create options -->
-                <option th:each="vendor : ${venList}" th:value="${vendor.id}" th:text="${vendor.name}"></option>
-            </select>
-        </div>
-
-        <div>
-            <label for="status">Status:</label>
-            <input type="checkbox" id="status" name="status">
-        </div>
-
-        <div>
-            <button type="submit">Save Coupon</button>
-        </div>
-    </form>
+            
+            <!-- Submit and Cancel Buttons -->
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="/coupons" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
 </body>
+
 </html>

@@ -4,7 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Vendor {
@@ -14,6 +17,9 @@ public class Vendor {
 
     private String name;
     private String description;
+    
+    @OneToMany(mappedBy="vendor")
+    private Set<Coupon> coupons;
 
     // Add more fields as needed
 

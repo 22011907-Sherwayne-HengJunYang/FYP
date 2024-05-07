@@ -17,11 +17,11 @@
             <table class="table bordered">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Food ID</th>
-                        <th>Issuer ID</th>
-                        <th>Claimant ID</th>
-                        <th>Vendor ID</th>
+                        <th>Coupon ID</th>
+                        <!--<th>Food ID</th>-->
+                        <!--<th>Issuer ID</th>-->
+                        <!--<th>Claimant ID</th>-->
+						<th>Vendor Name</th>
                         <th>Status</th>
                         <th>Issue Date</th>
                         <th>Expiry Date</th>
@@ -33,13 +33,14 @@
                     <th:block th:each="coupon : ${listCoupons}">
                         <tr>
                             <td th:text="${coupon.couponID}"></td>
-                            <td th:text="${coupon.foodID}"></td>
-                            <td th:text="${coupon.issuerID}"></td>
-                            <td th:text="${coupon.claimantID}"></td>
-                            <td th:text="${coupon.vendorID}"></td>
+                           <!-- <td th:text="${coupon.foodID}"></td>-->
+                           <!-- <td th:text="${coupon.issuerID}"></td>-->
+                            <!--<td th:text="${coupon.claimantID}"></td>-->
+							<td th:text="${coupon.vendor.name}"></td>
                             <td th:text="${coupon.status}"></td>
-                            <td th:text="${#temporals.format(coupon.issueDate, 'yyyy-MM-dd')}"></td>
-                            <td th:text="${#temporals.format(coupon.expiryDate, 'yyyy-MM-dd')}"></td>
+							<td th:text="${#dates.format(coupon.issueDate, 'yyyy-MM-dd')}"></td>
+							<td th:text="${#dates.format(coupon.expiryDate, 'yyyy-MM-dd')}"></td>
+>
                             <td>
                                 <!-- Edit coupon link -->
                                 <a th:href="@{/coupons/edit/{id}(id=${coupon.couponID})}">Edit</a>
