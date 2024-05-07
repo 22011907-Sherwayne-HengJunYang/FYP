@@ -39,7 +39,7 @@ public class Coupon {
         return calendar.getTime();
     }
 
-    // Getters and setters
+    /// Getters and setters
     public int getCouponID() {
         return couponID;
     }

@@ -20,7 +20,7 @@ public class VendorController {
         // Retrieve all vendors from the database
         List<Vendor> listVendors = vendorRepository.findAll();
 
-        // Add the list of vendors to the model
+        /// Add the list of vendors to the model
         model.addAttribute("listVendors", listVendors);
         
         // Return the view to display the list of vendors

@@ -21,7 +21,7 @@ public class Vendor {
     @OneToMany(mappedBy="vendor")
     private Set<Coupon> coupons;
 
-    // Add more fields as needed
+    /// Add more fields as needed
 
     public Integer getVendorID() {
         return vendorID;

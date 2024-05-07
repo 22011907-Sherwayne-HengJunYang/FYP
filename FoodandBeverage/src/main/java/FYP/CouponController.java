@@ -44,7 +44,7 @@ public class CouponController {
         return "add_coupon";
     }
 
-    // Save a new coupon
+    /// Save a new coupon
     @PostMapping("/coupons/save")
     public String saveCoupons(@Valid Coupon coupon, BindingResult result, Model model) {
         if (result.hasErrors()) {
