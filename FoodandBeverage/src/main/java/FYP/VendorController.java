@@ -1,11 +1,13 @@
 package FYP;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -36,8 +38,13 @@ public class VendorController {
     }
 
     @PostMapping("/vendors/save")
-    public String saveVendor(Vendor vendor) {
-        // Save the new vendor to the database
+    public String saveVendor(Vendor vendor, RedirectAttributes redirectAttribute) {
+    	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(vendor.getPassword());
+
+		vendor.setPassword(encodedPassword);
+		vendor.setRole("Vendor");
+    	// Save the new vendor to the database
         vendorRepository.save(vendor);
         
         // Redirect to the vendors page to see the updated list
@@ -60,6 +67,12 @@ public class VendorController {
     @PostMapping("/vendors/edit/{id}")
     public String saveUpdatedVendor(@PathVariable("id") Integer id, Vendor vendor) {
         // Save the updated vendor to the database
+    	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(vendor.getPassword());
+
+		vendor.setPassword(encodedPassword);
+		vendor.setRole("Vendor");
+		
         vendorRepository.save(vendor);
         
         // Redirect to the vendors page to see the updated list
