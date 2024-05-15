@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Coupon - View Claimants!</title>
+    <title>Coupon - View Issuer!</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Make sure to include jQuery before Bootstrap's JavaScript -->
 </head>
@@ -11,13 +11,13 @@
     <div class="container">
         <div th:replace="fragment/header"></div>
         <div class="py-5 text-center">
-            <h2>View Claimants</h2>
+            <h2>View Issuer</h2>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Claimant ID</th>
+                        <th>Issuer ID</th>
                         <th>Name</th>
                         <th>Username</th>
                         <th>Email</th>
@@ -26,19 +26,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Loop through each claimant in the list -->
-                    <th:block th:each="claimant : ${listClaimants}">
+                    <!-- Loop through each issuer in the list -->
+                    <th:block th:each="issuer : ${listIssuer}">
                         <tr>
-                            <td th:text="${claimant.claimantID}"></td>
-                            <td th:text="${claimant.name}"></td>
-                            <td th:text="${claimant.username}"></td>
-                            <td th:text="${claimant.email}"></td>
+                            <td th:text="${issuer.issuerID}"></td>
+                            <td th:text="${issuer.name}"></td>
+                            <td th:text="${issuer.username}"></td>
+                            <td th:text="${issuer.email}"></td>
                             <!-- Add more columns as needed -->
                             <td>
-                                <!-- Edit claimant link -->
-                                <a class="btn btn-primary btn-sm" th:href="@{/claimants/edit/{id}(id=${claimant.claimantID})}">Edit</a>
-                                <!-- Delete claimant link (optional) -->
-                                <a class="btn btn-danger btn-sm" th:href="@{/claimants/delete/{id}(id=${claimant.claimantID})}" onclick="return confirm('Are you sure you want to delete this claimant?')">Delete</a>
+                                <!-- Edit issuer link -->
+                                <a class="btn btn-primary btn-sm" th:href="@{/issuer/edit/{id}(id=${issuer.issuerID})}">Edit</a>
+                                <!-- Delete issuer link (optional) -->
+                                <a class="btn btn-danger btn-sm" th:href="@{/issuer/delete/{id}(id=${issuer.issuerID})}" onclick="return confirm('Are you sure you want to delete this issuer?')">Delete</a>
                             </td>
                         </tr>
                     </th:block>

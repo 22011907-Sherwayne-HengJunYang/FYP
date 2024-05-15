@@ -11,7 +11,6 @@ public class Issuer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer issuerID;
-
     private String name;
     private String username;
     private String password;

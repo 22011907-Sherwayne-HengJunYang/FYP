@@ -13,31 +13,31 @@ import java.util.List;
 
 @Controller
 public class IssuerController {
-
+ 
     @Autowired
     private IssuerRepository issuerRepository;
 
-    @GetMapping("/issuers")
-    public String viewIssuers(Model model) {
-        // Retrieve all issuers from the database
-        List<Issuer> listIssuers = issuerRepository.findAll();
+    @GetMapping("/issuer")
+    public String viewIssuer(Model model) {
+        // Retrieve all issuer from the database
+        List<Issuer> listIssuer = issuerRepository.findAll();
 
-        /// Add the list of issuers to the model
-        model.addAttribute("listIssuers", listIssuers);
+        /// Add the list of issuer to the model
+        model.addAttribute("listIssuer", listIssuer);
         
-        // Return the view to display the list of issuers
-        return "view_issuers";
+        // Return the view to display the list of issuer
+        return "view_issuer";
     }
 
     // Add new issuer
-    @GetMapping("/issuers/add")
+    @GetMapping("/issuer/add")
     public String showAddIssuerForm(Model model) {
         // Create a new Issuer object to bind the form data
         model.addAttribute("issuer", new Issuer());
         return "add_issuer";
     }
 
-    @PostMapping("/issuers/save")
+    @PostMapping("/issuer/save")
     public String saveIssuer(Issuer issuer, RedirectAttributes redirectAttribute) {
     	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(issuer.getPassword());
@@ -47,12 +47,12 @@ public class IssuerController {
     	// Save the new issuer to the database
         issuerRepository.save(issuer);
         
-        // Redirect to the issuers page to see the updated list
-        return "redirect:/issuers";
+        // Redirect to the issuer page to see the updated list
+        return "redirect:/issuer";
     }
 
     // Edit existing issuer
-    @GetMapping("/issuers/edit/{id}")
+    @GetMapping("/issuer/edit/{id}")
     public String editIssuer(@PathVariable("id") Integer id, Model model) {
         // Retrieve the issuer by ID
         Issuer issuer = issuerRepository.getReferenceById(id);
@@ -64,7 +64,7 @@ public class IssuerController {
         return "edit_issuer";
     }
 
-    @PostMapping("/issuers/edit/{id}")
+    @PostMapping("/issuer/edit/{id}")
     public String saveUpdatedIssuer(@PathVariable("id") Integer id, Issuer issuer) {
         // Save the updated issuer to the database
     	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -75,18 +75,18 @@ public class IssuerController {
 		
         issuerRepository.save(issuer);
         
-        // Redirect to the issuers page to see the updated list
-        return "redirect:/issuers";
+        // Redirect to the issuer page to see the updated list
+        return "redirect:/issuer";
     }
 
     // Delete issuer
-    @GetMapping("/issuers/delete/{id}")
+    @GetMapping("/issuer/delete/{id}")
     public String deleteIssuer(@PathVariable("id") Integer id) {
         // Delete the issuer by ID
         issuerRepository.deleteById(id);
         
-        // Redirect to the issuers page to see the updated list
-        return "redirect:/issuers";
+        // Redirect to the issuer page to see the updated list
+        return "redirect:/issuer";
     }
     
     

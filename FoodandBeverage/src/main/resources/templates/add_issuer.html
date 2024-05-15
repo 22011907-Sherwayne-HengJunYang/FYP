@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h1>Add New Issuer</h1>
-        <form action="/issuers/save" method="post" th:object="${issuer}">
+        <form action="/issuer/save" method="post" th:object="${issuer}">
             <!-- Hidden field for Issuer ID -->
             <input type="hidden" th:field="*{issuerID}" />
 
