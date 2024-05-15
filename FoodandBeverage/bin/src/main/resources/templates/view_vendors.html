@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Booklink - View Vendors</title>
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+	<script src="/bootstrap/css/bootstrap.js"></script>
+</head>
+
+<body>
+	<div class="container">
+        <!-- Header fragment replacement -->
+        <div th:replace="fragment/header"></div>
+        
+		<div class="container">
+			<div class="h1">View Vendors</div>
+			<table class="table bordered">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Vendor Name</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Loop through each vendor in the list -->
+					<th:block th:each="vendor : ${listVendors}">
+						<tr>
+							<td th:text="${vendor.vendorID}"></td>
+							<td th:text="${vendor.name}"></td>
+							<td>
+                                <!-- Edit vendor link -->
+								<a th:href="@{/vendors/edit/{id}(id=${vendor.vendorID})}">Edit</a>
+                            </td>
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
+            
+            <!-- Footer fragment replacement -->
+			<div th:replace="fragment/footer"></div>
+		</div>
+	</div>
+</body>
+
+</html>
