@@ -41,9 +41,10 @@ public class VendorController {
     public String saveVendor(Vendor vendor, RedirectAttributes redirectAttribute) {
     	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(vendor.getPassword());
+	
 
 		vendor.setPassword(encodedPassword);
-		vendor.setRole("Vendor");
+		vendor.setRole("ROLE_Vendor");
     	// Save the new vendor to the database
         vendorRepository.save(vendor);
         

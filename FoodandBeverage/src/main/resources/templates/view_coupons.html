@@ -5,11 +5,12 @@
     <title>Coupon - View Coupons!</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Make sure to include jQuery before Bootstrap's JavaScript -->
-    </head>
+</head>
 
-    <div class="container">
-    
+<body>
     <div th:replace="fragment/header"></div>
+	<br>
+    <div class="container">
         <div class="py-5 text-center">
             <h2>View Coupons</h2>
         </div>
@@ -47,11 +48,8 @@
         </div>
     </div>
 
-    <footer class="footer bg-dark fixed-bottom">
-        <div class="container text-center text-white">
-            <span>© 2024 Your Company. All rights reserved.</span>
-        </div>
-    </footer>
+    <div th:replace="fragment/footer"></div>
+
 </body>
 
 </html>

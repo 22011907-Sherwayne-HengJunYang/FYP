@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h1>Add New Claimant</h1>
-        <form action="/claimants/save" method="post" th:object="${claimant}">
+        <form th:action="@{/claimants/save}" method="post" th:object="${claimant}">
             <!-- Hidden field for Claimant ID -->
             <input type="hidden" th:field="*{claimantID}" />
 

@@ -1,25 +1,114 @@
-<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<style>
+	/* Color of the links BEFORE scroll */
+	.navbar-scroll .nav-link,
+	.navbar-scroll .navbar-toggler-icon,
+	.navbar-scroll .navbar-brand {
+	  color: #fff;
+	}
+	
+	/* Color of the links AFTER scroll */
+	.navbar-scrolled .nav-link,
+	.navbar-scrolled .navbar-toggler-icon,
+	.navbar-scrolled .navbar-brand {
+	  color: #fff;
+	}
+	
+	/* Color of the navbar AFTER scroll */
+	.navbar-scroll,
+	.navbar-scrolled {
+	  background-color: #cbbcb1;
+	}
+	
+	.mask-custom {
+	  backdrop-filter: blur(5px);
+	  background-color: rgba(255, 255, 255, .15);
+	}
+	
+	.navbar-brand {
+	  font-size: 1.75rem;
+	  letter-spacing: 3px;
+	}
+	.nav-link {
+	  color: #fff;
+	  text-decoration: none;
+	  padding: 0.5rem 1rem;
+	  display: inline-block;
+	}
+	
+	.btn-logout {
+	  background: none;
+	  border: none;
+	  color: #fff;
+	  padding: 0.5rem 1rem;
+	  cursor: pointer;
+	}
+	
+	.btn-logout:hover {
+	  color: #ccc; /* Add hover effect if needed */
+	}
+</style>
 <header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <img src="/images/booklink_logo.png">
-        <span class="navbar-brand h1">Coupon</span>
-      </a>
-      <div class="navbar-nav me-auto">
-        <a class="nav-link active" href="/">Home</a>
-        <a class="nav-link active" href="/vendors">Vendors</a>
-		<a class="nav-link active" href="/vendors/add">Add Vendors</a>
-        <a class="nav-link active" href="/coupons">Coupons</a>
-		<a class="nav-link active" href="/coupons/add">Add Coupons</a>
-		<a class="nav-link active" href="/claimants">Claimants</a>
-		<a class="nav-link active" href="/claimants/add">Add Claimants</a>
-		<a class="nav-link active" href="/issuer">Issuer</a>
-		<a class="nav-link active" href="/issuer/add">Add Issuer</a>
-		
-        <a class="nav-link active" href="/aboutus">About Us</a>
-        <a class="nav-link" href="#">Contact Us</a>
-
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top mask-custom shadow-0">
+    <div class="container">
+      <a class="navbar-brand" href="/"><span style="color: #5e9693;">Coupo</span><span style="color: #fff;">nify</span></a>
+      <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+        data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/vendors}">Vendors</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/vendors/add}">Add Vendors</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/coupons}">Coupons</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/coupons/add}">Add Coupons</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/claimants}">Claimants</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/claimants/add}">Add Claimants</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/issuer}">Issuer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/issuer/add}">Add Issuer</a>
+          </li>
+          <li class="nav-item">
+            <a sec:authorize="!isAuthenticated()" class="nav-link" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="d-inline">
+              <button class="btn-logout nav-link" type="submit">Logout</button>
+            </form>
+          </li>
+        </ul>
+        <ul class="navbar-nav d-flex flex-row">
+          <li class="nav-item me-3 me-lg-0">
+            <a class="nav-link" href="#!">
+              <i class="fas fa-shopping-cart"></i>
+            </a>
+          </li>
+          <li class="nav-item me-3 me-lg-0">
+            <a class="nav-link" href="#!">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+          <li class="nav-item me-3 me-lg-0">
+            <a class="nav-link" href="#!">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>

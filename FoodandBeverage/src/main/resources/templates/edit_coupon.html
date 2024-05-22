@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Add Coupon!</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Add Coupon</h1>
+
+        <form th:action="@{/coupons/save}" method="post" th:object="${coupon}">
+            <!-- Vendor Dropdown -->
+            <div class="form-group">
+                <label for="vendor">Vendor</label>
+                <select class="form-control" id="vendor" name="vendor" th:field="*{vendor}" required>
+                    <option th:each="vendor : ${venList}" th:value="${vendor.vendorID}" th:text="${vendor.name}"></option>
+                </select>
+            </div>
+            
+            <!-- Status Field -->
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status" th:field="*{status}">
+                    <option th:value="true" th:text="Valid"></option>
+                    <option th:value="false" th:text="Invalid"></option>
+                </select>
+            </div>
+            
+            
+
+            
+            <!-- Submit and Cancel Buttons -->
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="/coupons" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</body>
+
+</html>

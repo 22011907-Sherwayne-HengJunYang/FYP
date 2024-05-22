@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeLeaf.org">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset =UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Coupon - Home</title>
 
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
@@ -10,22 +10,24 @@
 </head>
 <style>
   body{
-    background-image: url("/images/background.jpg");
+    background-image: url("/images/hero_1.jpg");
   }
 </style>
-
 <body>
-  <div class="container">
   <div th:replace="fragment/header"></div>
-  <main>
-    <h1>Welcome to Coupon!</h1>
-	
+  <br>
+  <br>
+  <br>
+  <div class="container">
+    <main>
+      <h1>Welcome to Coupon!</h1>
+	  <div sec:authorize="isAuthenticated()">
+	  	<h4 class="text-center">Hello <span sec:authentication="principal.username"></span>!</h4>
+	  </div>
     </main>
-  <div th:replace="fragment/footer"></div>
-
   </div>
-
+  
+  <div th:replace="fragment/footer"></div>
+  
 </body>
-
-
 </html>

@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Edit Issuer</h1>
-			        <form action="/issuers/save" method="post" th:object="${issuer}">
+		<form th:action="@{/issuers/save}" method="post" th:object="${issuer}">
             <!-- Hidden field for Issuer ID -->
             <!-- Hidden field for Issuer ID -->
             <input type="hidden" th:field="*{issuerID}" />

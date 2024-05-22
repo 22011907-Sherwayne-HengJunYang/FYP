@@ -45,7 +45,7 @@ public class ClaimantController {
         claimant.setPassword(encodedPassword);
         
         // Set role for claimant
-        claimant.setRole("Claimant");
+        claimant.setRole("ROLE_Claimant");
 
         // Save the new claimant to the database
         claimantRepository.save(claimant);

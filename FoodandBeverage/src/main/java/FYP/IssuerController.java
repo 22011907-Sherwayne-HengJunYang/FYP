@@ -43,7 +43,7 @@ public class IssuerController {
 		String encodedPassword = passwordEncoder.encode(issuer.getPassword());
 
 		issuer.setPassword(encodedPassword);
-		issuer.setRole("Issuer");
+		issuer.setRole("ROLE_Issuer");
     	// Save the new issuer to the database
         issuerRepository.save(issuer);
         

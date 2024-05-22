@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Greenify - Login</title>
+   
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap/css/login.css">
+</head>
+<body>
+    <div class="center">
+        <h1>Login</h1>
+        <form th:action="@{/login}" method="post">
+            <div class="txt_field">
+                <input type="text" th:required="true" th:name="username">
+                <span></span>
+                <label>Username</label>
+            </div>
+            <div class="txt_field">
+                <input type="password" th:required="true" th:name="password">
+                <span></span>
+                <label>Password</label>
+            </div>
+
+           <input type="submit" value="Login">
+            <div class="signup_link">
+                Not a member? <a href="/signup">Signup</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
