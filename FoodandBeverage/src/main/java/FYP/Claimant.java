@@ -11,7 +11,6 @@ public class Claimant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer claimantID;
-
     private String name;
     private String username;
     private String password;

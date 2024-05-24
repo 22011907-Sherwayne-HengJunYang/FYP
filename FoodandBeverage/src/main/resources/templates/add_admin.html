@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Coupon - Add New Admin!</title>
+    
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Admin</h1>
+        <form th:action="@{/admins/save}" method="post" th:object="${admin}">
+            <!-- Hidden field for Admin ID -->
+            <input type="hidden" th:field="*{adminID}" />
+
+            <div class="form-group">
+                <label for="admin_name">Name:</label>
+                <input id="admin_name" type="text" class="form-control" th:field="*{name}" />
+            </div>
+
+            <div class="form-group">
+                <label for="admin_username">Username:</label>
+                <input id="admin_username" type="text" class="form-control" th:field="*{username}" />
+            </div>
+
+            <div class="form-group">
+                <label for="admin_email">Email:</label>
+                <input id="admin_email" type="email" class="form-control" th:field="*{email}" />
+            </div>
+
+            <div class="form-group">
+                <label for="admin_password">Password:</label>
+                <input id="admin_password" type="password" class="form-control" th:field="*{password}" />
+            </div>
+
+            <!-- Add more fields for the admin as needed -->
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -14,6 +14,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 	@Bean
+	public AdminDetailsService adminDetailsService() {
+		return new AdminDetailsService();
+	}
+	
+	@Bean
     public VendorDetailsService vendorDetailsService() {
         return new VendorDetailsService();
     }
@@ -36,7 +41,7 @@ public class WebSecurityConfig {
     @Bean
     public CompositeUserDetailsService compositeUserDetailsService() {
         return new CompositeUserDetailsService(
-                Arrays.asList(vendorDetailsService(), issuerDetailsService(), claimantDetailsService()));
+                Arrays.asList(vendorDetailsService(), issuerDetailsService(), claimantDetailsService(), adminDetailsService()));
     }
 
     @Bean
@@ -52,7 +57,8 @@ public class WebSecurityConfig {
 		http.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
 				.requestMatchers("/coupons", "/coupons/add", "/coupons/edit/*", "/coupons/save", "/coupons/delete",
 						"/issuer", "/issuer/add", "/issuer/edit/*", "/issuer/save", "/issuer/delete/*", "/vendors",
-						"/vendors/add", "/vendors/edit/*", "/vendors/save", "/vendors/delete/*")
+						"/vendors/add", "/vendors/edit/*", "/vendors/save", "/vendors/delete/*","/claimants","/claimants/add","/claimants/edit/*"
+						,"/claimants/save","/claimants/delete/*")
 				.permitAll().requestMatchers("header.html").permitAll().requestMatchers("/").permitAll() // Home page is
 																											// visible
 																											// without
