@@ -58,7 +58,7 @@ public class WebSecurityConfig {
 				.requestMatchers("/coupons", "/coupons/add", "/coupons/edit/*", "/coupons/save", "/coupons/delete",
 						"/issuer", "/issuer/add", "/issuer/edit/*", "/issuer/save", "/issuer/delete/*", "/vendors",
 						"/vendors/add", "/vendors/edit/*", "/vendors/save", "/vendors/delete/*","/claimants","/claimants/add","/claimants/edit/*"
-						,"/claimants/save","/claimants/delete/*")
+						,"/claimants/save","/claimants/delete/*","/makePublic","/publicCoupons")
 				.permitAll().requestMatchers("header.html").permitAll().requestMatchers("/").permitAll() // Home page is
 																											// visible
 																											// without

@@ -29,9 +29,12 @@
                 </select>
             </div>
             
-            
+            <!-- Quantity Field -->
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" class="form-control" id="quantity" name="quantity" th:field="*{quantity}" required>
+            </div>
 
-            
             <!-- Submit and Cancel Buttons -->
             <button type="submit" class="btn btn-primary">Save</button>
             <a href="/coupons" class="btn btn-secondary">Cancel</a>

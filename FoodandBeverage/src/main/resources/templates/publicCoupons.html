@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Public Coupons</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div th:replace="fragment/header"></div>
+    <br>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>Public Coupons</h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Coupon ID</th>
+                        <th>Vendor Name</th>
+						<th>Availability</th>
+                        <th>Status</th>
+                        <th>Issue Date</th>
+                        <th>Expiry Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through each public coupon in the list -->
+                    <th:block th:each="coupon : ${publicCoupons}">
+                        <tr>
+                            <td th:text="${coupon.couponID}"></td>
+                            <td th:text="${coupon.vendor.name}"></td>
+							<td th:text="${coupon.publicQuantity}"></td>
+                            <td th:text="${coupon.status ? 'Valid' : 'Invalid'}"></td>
+                            <td th:text="${#dates.format(coupon.issueDate, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${#dates.format(coupon.expiryDate, 'yyyy-MM-dd')}"></td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:replace="fragment/footer"></div>
+
+</body>
+
+</html>

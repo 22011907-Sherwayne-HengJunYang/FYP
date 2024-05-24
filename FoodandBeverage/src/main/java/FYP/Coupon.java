@@ -1,4 +1,6 @@
 package FYP;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -15,10 +17,15 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int couponID;
     private boolean status;
+    private int quantity;
+    private boolean publicCoupon;
+    private int publicQuantity;
     
     // Date fields
     private Date issueDate;
     private Date expiryDate;
+
+    private String redeemCode;
     
     @ManyToOne
     @JoinColumn(name = "vendor_id", nullable = false)
@@ -29,6 +36,7 @@ public class Coupon {
         this.issueDate = new Date(); // Sets issue date to the current date and time
         this.expiryDate = calculateExpiryDate(this.issueDate);
         this.status = true; // Initial status can be set as per your preference (e.g. true or false)
+        this.redeemCode = generateRedeemCode(); // Generate random redeem code
     }
 
     // Method to calculate the expiry date
@@ -39,7 +47,15 @@ public class Coupon {
         return calendar.getTime();
     }
 
-    /// Getters and setters
+    // Method to generate random redeem code
+    private String generateRedeemCode() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[24]; // 24 bytes = 192 bits
+        random.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    }
+
+    // Getters and setters
     public int getCouponID() {
         return couponID;
     }
@@ -56,12 +72,19 @@ public class Coupon {
         this.vendor = vendor;
     }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
     public boolean isStatus() {
         return status;
     }
 
     public void setStatus(boolean status) {
-        // Directly set the status based on user input
         this.status = status;
     }
 
@@ -71,7 +94,6 @@ public class Coupon {
 
     public void setIssueDate(Date issueDate) {
         this.issueDate = issueDate;
-        // Recalculate expiry date based on the new issue date
         this.expiryDate = calculateExpiryDate(issueDate);
     }
 
@@ -83,8 +105,39 @@ public class Coupon {
         this.expiryDate = expiryDate;
     }
 
+    public String getRedeemCode() {
+        return redeemCode;
+    }
+
+    public void setRedeemCode(String redeemCode) {
+        this.redeemCode = redeemCode;
+    }
+    
+    public boolean isPublicCoupon() {
+        return publicCoupon;
+    }
+
+    public void setPublicCoupon(boolean publicCoupon) {
+        this.publicCoupon = publicCoupon;
+    }
+    
     // Method to get the string representation of the status
     public String getStatusString() {
         return status ? "valid" : "invalid";
     }
+    public int getId() {
+        return couponID;
+    }
+
+    public void setId(int id) {
+        this.couponID = id;
+    }
+
+	public int getPublicQuantity() {
+		return publicQuantity;
+	}
+
+	public void setPublicQuantity(int publicQuantity) {
+		this.publicQuantity = publicQuantity;
+	}
 }

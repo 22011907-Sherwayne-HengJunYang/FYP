@@ -11,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 
@@ -61,6 +63,27 @@ public class CouponController {
         CouponRepository.save(coupon);
         return "redirect:/coupons";
     }
+    
+    @GetMapping("/coupons/edit/{id}")
+    public String editCoupon(@PathVariable("id") Integer id, Model model) {
+
+        Coupon coupon = CouponRepository.getReferenceById(id);
+        
+
+        List<Vendor> venList = VendorRepository.findAll();
+        model.addAttribute ("venList", venList);
+        model.addAttribute("coupon", coupon);
+        
+        return "edit_coupon";
+    }
+    @PostMapping("/coupons/edit/{id}")
+    public String saveupdated(@PathVariable("id") Integer id, Coupon coupon) {
+   
+   
+        CouponRepository.save(coupon);
+        
+        return "redirect:/coupons";
+    }
  // Method to calculate the expiry date
     private Date calculateExpiryDate(Date issueDate) {
         Calendar calendar = Calendar.getInstance();
@@ -76,5 +99,44 @@ public class CouponController {
     	
     	return "redirect:/coupons";
     }
-   
+    
+    @PostMapping("/makePublic")
+    public String makeCouponPublic(@RequestParam("couponID") int couponID,
+                                   @RequestParam("quantity") int quantity,
+                                   RedirectAttributes redirectAttributes) {
+        // Retrieve the coupon from the database
+        Coupon coupon = CouponRepository.findById(couponID).orElse(null);
+
+        if (coupon != null && quantity > 0) {
+            if (coupon.getQuantity() >= quantity) {
+                // Update the coupon to make it public
+                coupon.setPublicCoupon(true);
+
+                // Decrement the quantity by the specified amount
+                coupon.setQuantity(coupon.getQuantity() - quantity);
+
+                // Increment the public quantity by the specified amount
+                coupon.setPublicQuantity(coupon.getPublicQuantity() + quantity);
+
+                CouponRepository.save(coupon);
+                return "redirect:/publicCoupons";
+            } else {
+                // Add a flash attribute for insufficient quantity
+                redirectAttributes.addFlashAttribute("errorMessage", "Insufficient quantity of coupons.");
+            }
+        }
+        return "redirect:/coupons"; // Redirect to the coupon list page
+    }
+    // Handler for viewing public coupons
+    @GetMapping("/publicCoupons")
+    public String viewPublicCoupons(Model model) {
+        // Retrieve all public coupons from the database
+        List<Coupon> publicCoupons = CouponRepository.findByPublicCoupon(true);
+
+        // Add the list of public coupons to the model
+        model.addAttribute("publicCoupons", publicCoupons);
+
+        // Return the view for viewing public coupons
+        return "publicCoupons";
+    }
 }
