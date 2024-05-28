@@ -1,0 +1,142 @@
+@font-face {
+	font-family: 'myFirstFont';
+	src: url('sansation_light.woff') format('woff');
+}
+
+html,
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-image: url("/images/Background2.png");
+	background-size: cover;
+	background-position: center center;
+	background-repeat: repeat-y;
+	/* Repeat vertically */
+	background-attachment: fixed;
+	/* Fixed background */
+	font-family: 'myFirstFont';
+}
+
+.container {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+main {
+	flex: 1;
+	padding: 20px;
+	background-color: rgba(255, 255, 255, 0.8);
+	border-radius: 10px;
+	margin-top: 20px;
+}
+
+/*Category*/
+
+h3 {
+	font-size: 18px;
+	line-height: 32px;
+	font-family: Roboto;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.index-category {
+	width: 100%;
+	padding: 60px 0;
+	background-color: #fff;
+	display: flex;
+	justify-content: center;
+	column-gap: 20px;
+	flex-wrap: wrap;
+}
+
+.index-category p {
+	color: #111;
+	text-align: center;
+	padding-bottom: 40px;
+	flex-basis: 100%;
+	text-transform: uppercase;
+	font-size: 28px;
+}
+
+.index-category p2 {
+	color: #111;
+	text-align: center;
+	padding-bottom: 40px;
+	flex-basis: 100%;
+	text-transform: uppercase;
+	font-size: 28px;
+}
+
+.index-category-box {
+	width: 120px;
+	height: 120px;
+	background-color: #111;
+
+}
+
+.index-category-box {
+	width: 120px;
+	height: 120px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	/* Adding border-radius to match the container */
+}
+
+.dark-overlay {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: #000;
+	opacity: 0.6;
+	transition: all ease-in-out 400ms;
+	z-index: 1;
+}
+
+.index-category-box:hover .dark-overlay {
+	opacity: 0.1;
+
+}
+
+.index-category h3 {
+	font-size: 18px;
+	line-height: 24px;
+	text-align: center;
+	text-shadow: -2px 1px 9px #000;
+	z-index: 100;
+	color: white;
+}
+
+.category-link {
+	text-decoration: none;
+	/* Remove default underline */
+	color: inherit;
+	/* Inherit text color from parent */
+}
+
+.category-link:hover {
+	color: inherit;
+	/* Inherit text color from parent */
+	text-decoration: none;
+	/* Remove underline on hover */
+}
+
+
+.category-link:hover {
+	color: inherit;
+	/* Inherit text color from parent */
+	text-decoration: none;
+	/* Remove underline on hover */
+}

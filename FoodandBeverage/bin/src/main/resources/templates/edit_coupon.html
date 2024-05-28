@@ -11,7 +11,7 @@
     <div class="container">
         <h1>Add Coupon</h1>
 
-        <form th:action="@{/coupons/save}" method="post" th:object="${coupon}">
+        <form th:action="@{/coupons/edit/{id}(id=${coupon.id})}" method="post" th:object="${coupon}">
             <!-- Vendor Dropdown -->
             <div class="form-group">
                 <label for="vendor">Vendor</label>
@@ -34,7 +34,7 @@
                 <label for="quantity">Quantity</label>
                 <input type="number" class="form-control" id="quantity" name="quantity" th:field="*{quantity}" required>
             </div>
-
+            
             <!-- Submit and Cancel Buttons -->
             <button type="submit" class="btn btn-primary">Save</button>
             <a href="/coupons" class="btn btn-secondary">Cancel</a>

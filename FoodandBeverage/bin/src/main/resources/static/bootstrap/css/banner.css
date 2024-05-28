@@ -1,0 +1,60 @@
+/* Add these styles for the image header */
+.w3-display-container {
+    position: relative;
+    max-width: 100%;
+    height: 400px; /* Adjust the height as needed */
+    overflow: hidden;
+}
+
+.w3-display-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the entire image is covered without stretching */
+}
+
+.w3-display-topleft {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.w3-text-white {
+    color:black
+}
+
+.w3-jumbo {
+    font-size: 2.5em;
+}
+
+.w3-hide-small {
+    display: none;
+}
+
+.w3-hide-large, .w3-hide-medium {
+    display: block;
+}
+
+/* Adjust the padding and margin as needed */
+.w3-display-topleft {
+    padding: 24px 48px;
+}
+
+/* Style the SHOP NOW button */
+.w3-button.w3-black {
+    background-color: #000;
+    color: #fff;
+    padding: 15px 25px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
+.w3-button.w3-black:hover {
+    background-color: #555;
+}
+main h1.w3-jumbo.w3-hide-small,
+main h1.w3-hide-small {
+    display: block !important;
+    font-weight: bolder;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>View Public Coupons</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Make sure to include jQuery before Bootstrap's JavaScript -->
+</head>
+
+<body>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>View Public Coupons</h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Coupon ID</th>
+                        <th>Vendor Name</th>
+                        <th>Quantity</th> <!-- New column for Quantity -->
+                        <th>Status</th>
+                        <th>Issue Date</th>
+                        <th>Expiry Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through each publish coupon in the list -->
+                    <tr th:each="publishCoupon : ${publishCouponList}">
+                        <td th:text="${publishCoupon.coupon.id}"></td>
+                        <td th:text="${publishCoupon.coupon.vendor.name}"></td>
+                        <td th:text="${publishCoupon.quantity}"></td> <!-- Display Quantity -->
+                        <td th:text="${publishCoupon.coupon.status ? 'Valid' : 'Invalid'}"></td>
+                        <td th:text="${#dates.format(publishCoupon.coupon.issueDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#dates.format(publishCoupon.coupon.expiryDate, 'yyyy-MM-dd')}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

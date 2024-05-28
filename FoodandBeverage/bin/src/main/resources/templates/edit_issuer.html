@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Coupon - Edit Issuer</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Issuer</h1>
+		<form th:action="@{/issuers/save}" method="post" th:object="${issuer}">
+            <!-- Hidden field for Issuer ID -->
+            <!-- Hidden field for Issuer ID -->
+            <input type="hidden" th:field="*{issuerID}" />
+
+            <div class="form-group">
+                <label for="issuer_name">Name:</label>
+                <input id="issuer_name" type="text" class="form-control" th:field="*{name}" />
+            </div>
+
+            <!-- Add more fields for the issuer as needed -->
+            <!-- Prepopulate other fields as necessary for editing -->
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="/issuers" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
