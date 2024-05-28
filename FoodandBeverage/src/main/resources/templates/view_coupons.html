@@ -34,7 +34,7 @@
                     <!-- Loop through each coupon in the list -->
                     <th:block th:each="coupon : ${listCoupons}">
                         <tr>
-                            <td th:text="${coupon.couponID}"></td>
+							<td th:text="${coupon.id}"></td>
                             <td th:text="${coupon.vendor.name}"></td>
                             <td th:text="${coupon.quantity}"></td> <!-- Display Quantity -->
                             <td th:text="${coupon.status ? 'Valid' : 'Invalid'}"></td>
@@ -42,13 +42,13 @@
                             <td th:text="${#dates.format(coupon.expiryDate, 'yyyy-MM-dd')}"></td>
                             <td>
                                 <!-- Edit coupon link -->
-                                <a class="btn btn-primary btn-sm" th:href="@{/coupons/edit/{id}(id=${coupon.couponID})}">Edit</a>
+                                <a class="btn btn-primary btn-sm" th:href="@{/coupons/edit/{id}(id=${coupon.id})}">Edit</a>
                                 <!-- Delete coupon link (optional) -->
-                                <a class="btn btn-danger btn-sm" th:href="@{/coupons/delete/{id}(id=${coupon.couponID})}" onclick="return confirm('Are you sure you want to delete this coupon?')">Delete</a>
+                                <a class="btn btn-danger btn-sm" th:href="@{/coupons/delete/{id}(id=${coupon.id})}" onclick="return confirm('Are you sure you want to delete this coupon?')">Delete</a>
                                 <!-- Make coupon public button -->
 								<th:block th:if="${coupon.quantity > 0}">
 								    <form th:action="@{/makePublic}" method="post">
-								        <input type="hidden" name="couponID" th:value="${coupon.couponID}" />
+								        <input type="hidden" name="id" th:value="${coupon.id}" />
 								        <input type="number" name="quantity" min="1" value="1" /> <!-- Quantity input -->
 								        <button type="submit" class="btn btn-warning btn-sm">Make Public</button>
 								    </form>

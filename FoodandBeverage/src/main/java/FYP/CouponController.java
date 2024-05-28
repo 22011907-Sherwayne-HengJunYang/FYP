@@ -101,11 +101,11 @@ public class CouponController {
     }
     
     @PostMapping("/makePublic")
-    public String makeCouponPublic(@RequestParam("couponID") int couponID,
+    public String makeCouponPublic(@RequestParam("id") int id,
                                    @RequestParam("quantity") int quantity,
                                    RedirectAttributes redirectAttributes) {
         // Retrieve the coupon from the database
-        Coupon coupon = CouponRepository.findById(couponID).orElse(null);
+        Coupon coupon = CouponRepository.findById(id).orElse(null);
 
         if (coupon != null && quantity > 0) {
             if (coupon.getQuantity() >= quantity) {

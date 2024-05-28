@@ -11,8 +11,6 @@
     <div class="container">
         <h1>Add New Claimant</h1>
         <form th:action="@{/claimants/save}" method="post" th:object="${claimant}">
-            <!-- Hidden field for Claimant ID -->
-            <input type="hidden" th:field="*{claimantID}" />
 
             <div class="form-group">
                 <label for="claimant_name">Name:</label>

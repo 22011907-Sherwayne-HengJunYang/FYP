@@ -3,23 +3,28 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int couponID;
+    private int id;
     private boolean status;
     private int quantity;
     private boolean publicCoupon;
     private int publicQuantity;
+    private String description;
     
     // Date fields
     private Date issueDate;
@@ -30,6 +35,10 @@ public class Coupon {
     @ManyToOne
     @JoinColumn(name = "vendor_id", nullable = false)
     private Vendor vendor;
+    
+    @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderCoupon> orderCoupons;
+
     
     // Default constructor
     public Coupon() {
@@ -56,14 +65,6 @@ public class Coupon {
     }
 
     // Getters and setters
-    public int getCouponID() {
-        return couponID;
-    }
-
-    public void setCouponID(int couponID) {
-        this.couponID = couponID;
-    }
-
     public Vendor getVendor() {
         return vendor;
     }
@@ -126,11 +127,11 @@ public class Coupon {
         return status ? "valid" : "invalid";
     }
     public int getId() {
-        return couponID;
+        return id;
     }
 
     public void setId(int id) {
-        this.couponID = id;
+        this.id = id;
     }
 
 	public int getPublicQuantity() {
@@ -139,5 +140,13 @@ public class Coupon {
 
 	public void setPublicQuantity(int publicQuantity) {
 		this.publicQuantity = publicQuantity;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

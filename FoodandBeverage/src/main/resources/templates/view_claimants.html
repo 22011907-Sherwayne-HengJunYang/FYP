@@ -29,16 +29,16 @@
                     <!-- Loop through each claimant in the list -->
                     <th:block th:each="claimant : ${listClaimants}">
                         <tr>
-                            <td th:text="${claimant.claimantID}"></td>
+                            <td th:text="${claimant.id}"></td>
                             <td th:text="${claimant.name}"></td>
                             <td th:text="${claimant.username}"></td>
                             <td th:text="${claimant.email}"></td>
                             <!-- Add more columns as needed -->
                             <td>
                                 <!-- Edit claimant link -->
-                                <a class="btn btn-primary btn-sm" th:href="@{/claimants/edit/{id}(id=${claimant.claimantID})}">Edit</a>
+                                <a class="btn btn-primary btn-sm" th:href="@{/claimants/edit/{id}(id=${claimant.id})}">Edit</a>
                                 <!-- Delete claimant link (optional) -->
-                                <a class="btn btn-danger btn-sm" th:href="@{/claimants/delete/{id}(id=${claimant.claimantID})}" onclick="return confirm('Are you sure you want to delete this claimant?')">Delete</a>
+                                <a class="btn btn-danger btn-sm" th:href="@{/claimants/delete/{id}(id=${claimant.id})}" onclick="return confirm('Are you sure you want to delete this claimant?')">Delete</a>
                             </td>
                         </tr>
                     </th:block>

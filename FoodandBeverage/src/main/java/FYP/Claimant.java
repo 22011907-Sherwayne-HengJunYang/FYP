@@ -4,29 +4,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.Objects;
 
 @Entity
 public class Claimant {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer claimantID;
+  
     private String name;
     private String username;
     private String password;
     private String email;
     private String role;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-
-    /// Add more fields as needed
-
-    public Integer getClaimantID() {
-        return claimantID;
-    }
-
-    public void setClaimantID(Integer claimantID) {
-        this.claimantID = claimantID;
-    }
 
     public String getName() {
         return name;
@@ -67,21 +57,13 @@ public class Claimant {
     public void setRole(String role) {
         this.role = role;
     }
-
-    // Add getters and setters for other fields
-
-    // Override equals and hashCode methods for consistency
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Claimant)) return false;
-        Claimant claimant = (Claimant) o;
-        return Objects.equals(claimantID, claimant.claimantID);
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(claimantID);
+    public void setId(int id) {
+        this.id = id;
     }
+
+
 }

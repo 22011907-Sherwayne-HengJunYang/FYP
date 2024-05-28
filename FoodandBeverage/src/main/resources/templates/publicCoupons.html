@@ -15,7 +15,7 @@
     <br>
     <div class="container">
         <div class="py-5 text-center">
-            <h2>Public Coupons</h2>
+            <h2>View Public Coupons</h2>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered">
@@ -23,22 +23,30 @@
                     <tr>
                         <th>Coupon ID</th>
                         <th>Vendor Name</th>
-						<th>Availability</th>
+                        <th>Availability</th>
                         <th>Status</th>
                         <th>Issue Date</th>
                         <th>Expiry Date</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Loop through each public coupon in the list -->
                     <th:block th:each="coupon : ${publicCoupons}">
                         <tr>
-                            <td th:text="${coupon.couponID}"></td>
+                            <td th:text="${coupon.id}"></td>
                             <td th:text="${coupon.vendor.name}"></td>
-							<td th:text="${coupon.publicQuantity}"></td>
+                            <td th:text="${coupon.publicQuantity}"></td>
                             <td th:text="${coupon.status ? 'Valid' : 'Invalid'}"></td>
                             <td th:text="${#dates.format(coupon.issueDate, 'yyyy-MM-dd')}"></td>
                             <td th:text="${#dates.format(coupon.expiryDate, 'yyyy-MM-dd')}"></td>
+                            <td>
+                                <form id="collect-form" th:action="@{/cart/add/{couponId}(couponId=${coupon.id})}" method="post">
+                                    <label for="quantity">Quantity:</label>
+                                    <input type="number" id="quantity" name="quantity" value="1" min="1" required>
+                                    <button type="submit" class="btn btn-primary">Collect</button>
+                                </form>
+                            </td>
                         </tr>
                     </th:block>
                 </tbody>
@@ -47,7 +55,5 @@
     </div>
 
     <div th:replace="fragment/footer"></div>
-
 </body>
-
 </html>

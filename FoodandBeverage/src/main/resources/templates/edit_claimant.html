@@ -2,24 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Coupon - Edit Claimant</title>
+    <title>Edit Claimant</title>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <script src="/bootstrap/js/bootstrap.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Edit Claimant</h1>
-			        <form th:action="@{/claimants/save}" method="post" th:object="${claimant}">
-            <!-- Hidden field for Claimant ID -->
-            <!-- Hidden field for Claimant ID -->
-            <input type="hidden" th:field="*{claimantID}" />
-
+        <form th:action="@{/claimants/edit/{id}(id=${claimant.id})}" method="post" th:object="${claimant}">
             <div class="form-group">
-                <label for="claimant_name">Name:</label>
-                <input id="claimant_name" type="text" class="form-control" th:field="*{name}" />
+                <label for="name">Name:</label>
+                <input id="name" type="text" class="form-control" th:field="*{name}" />
             </div>
-
-            <!-- Add more fields for the claimant as needed -->
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input id="username" type="text" class="form-control" th:field="*{username}" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input id="password" type="password" class="form-control" th:field="*{password}" />
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input id="email" type="text" class="form-control" th:field="*{email}" />
+            </div>
+            <!-- Role field is not editable -->
+            <div class="form-group">
+                <label for="role">Role:</label>
+                <input id="role" type="text" class="form-control" th:value="${claimant.role}" readonly="readonly" />
+            </div>
+            <!-- You can add more fields for the claimant as needed -->
             <!-- Prepopulate other fields as necessary for editing -->
 
             <div class="mt-3">
