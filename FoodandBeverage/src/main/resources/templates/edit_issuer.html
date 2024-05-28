@@ -2,25 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Coupon - Edit Issuer</title>
+    <title>Edit Issuer</title>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <script src="/bootstrap/js/bootstrap.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Edit Issuer</h1>
-		<form th:action="@{/issuers/save}" method="post" th:object="${issuer}">
-            <!-- Hidden field for Issuer ID -->
+        <form th:action="@{/issuer/edit/{id}(id=${issuer.issuerID})}" method="post" th:object="${issuer}">
             <!-- Hidden field for Issuer ID -->
             <input type="hidden" th:field="*{issuerID}" />
 
             <div class="form-group">
-                <label for="issuer_name">Name:</label>
-                <input id="issuer_name" type="text" class="form-control" th:field="*{name}" />
+                <label for="name">Name:</label>
+                <input id="name" type="text" class="form-control" th:field="*{name}" />
             </div>
-
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input id="username" type="text" class="form-control" th:field="*{username}" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input id="password" type="password" class="form-control" th:field="*{password}" />
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input id="email" type="text" class="form-control" th:field="*{email}" />
+            </div>
+            <!-- Role field is not editable -->
+            <div class="form-group">
+                <label for="role">Role:</label>
+                <input id="role" type="text" class="form-control" th:value="${issuer.role}" readonly="readonly" />
+            </div>
             <!-- Add more fields for the issuer as needed -->
-            <!-- Prepopulate other fields as necessary for editing -->
 
             <div class="mt-3">
                 <button type="submit" class="btn btn-primary">Update</button>
