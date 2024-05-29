@@ -55,20 +55,22 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-				.requestMatchers("/coupons", "/coupons/add", "/coupons/edit/*", "/coupons/save", "/coupons/delete",
+				.requestMatchers(
 						"/issuer", "/issuer/add", "/issuer/edit/*", "/issuer/save", "/issuer/delete/*", "/vendors",
 						"/vendors/add", "/vendors/edit/*", "/vendors/save", "/vendors/delete/*","/claimants","/claimants/add","/claimants/edit/*"
-						,"/claimants/save","/claimants/delete/*","/makePublic","/publicCoupons")
-				.permitAll().requestMatchers("header.html").permitAll().requestMatchers("/").permitAll() // Home page is
-																											// visible
-																											// without
-																											// logging
-																											// in
+						,"/claimants/save","/claimants/delete/*","/admins","/admins/add","/admins/save"
+				,"/admins/edit/*","/admins/delete/*")
+				.hasRole("Admin")
+				.requestMatchers("/coupons").hasAnyRole("Issuer","Vendor","Admin")
+				.requestMatchers("/makePublic").hasRole("Issuer")																			
+				.requestMatchers("/coupons/add", "/coupons/edit/*", "/coupons/save", "/coupons/delete").hasRole("Vendor")																					// logging
+				.requestMatchers("/cart","/cart/process_order","/Inventory","/cart","/cart/process_order").hasRole("Claimant")
+				.requestMatchers("/publicCoupons").permitAll()
 				.requestMatchers("/aboutus").permitAll() // about page is visible without logging in
 				.requestMatchers("/signup").permitAll().requestMatchers("/signup/save").permitAll() // about page is
-																									// visible without
-																									// logging in
-				.requestMatchers("/Contactus").permitAll() // contact page is visible without logging in
+				.requestMatchers("footer.html").permitAll()																			// visible without
+				.requestMatchers("header.html").permitAll()																					// logging in
+				.requestMatchers("/").permitAll() 
 				.requestMatchers("/bootstrap/*/*").permitAll() // for static resources, visible to all
 				.requestMatchers("login.css").permitAll() // for static resources, visible to all
 				.requestMatchers("/login").permitAll() // for static resources, visible to all
