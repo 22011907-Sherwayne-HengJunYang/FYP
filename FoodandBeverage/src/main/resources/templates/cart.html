@@ -17,26 +17,7 @@
 			<div class="container ">
 				<div class="row fs-1 text-center">
 					<p>	Watch List</p>
-					<div th:if="${updateSuccess}">
-						<div class="alert alert-success" role="alert">
-							Cart coupon updated successfully!
-						</div>
-					</div>
-					<div th:if="${updateError}">
-						<div class="alert alert-danger" role="alert">
-							Not Enough Quantity!
-						</div>
-					</div>
-					<div th:if="${DeleteSuccess}">
-						<div class="alert alert-success" role="alert">
-							Coupon Delete successfully!
-						</div>
-					</div>
-					<div th:if="${addError}">
-						<div class="alert alert-danger" role="alert">
-							Not Enough Quantity!
-						</div>
-					</div>
+
 				</div>
 				<div class="row mb-5">
 					<!-- shopping cart -->
@@ -60,11 +41,7 @@
 								
 								<div class="col align-self-center">
 									<!-- Update coupon quantity in cart form -->
-									<form class="needs-validation" novalidate
-										th:action="@{/cart/update/{id}(id = ${cartCoupon.id})}" method="post">
-										<input type="number" name="qty" th:value="${cartCoupon.quantity}">
-										<button class="btn btn-primary">Update Cart</button>
-									</form>
+						
 									<form th:action="@{/cart/process_order}" method="post" id="paypalForm">
 										<input type="hidden" name="claimantId" id ="claimantId" th:value="${claimantId}"> 
 										<input type="hidden" name="orderId" id="orderId"> 
@@ -72,11 +49,12 @@
 										<button class="btn btn-primary">Confirm</button>
 									</form>
 
-
+									<br>
 									<!-- Remove coupon from cart link -->
 									<form th:action="@{/cart/remove/{id}(id=${cartCoupon.id})}" method="post">
 										<button type="submit" class="btn btn-danger">Remove</button>
 									</form>
+									<br>
 								</div>
 							</div>
 						</div>
