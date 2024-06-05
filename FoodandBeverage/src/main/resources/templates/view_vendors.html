@@ -2,51 +2,53 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Coupon - View Vendors!</title>
-	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-	<script src="/bootstrap/css/bootstrap.js"></script>
+    <title>Couponify - View Vendors!</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-image: url("/images/hero_1.jpg");
+        }
+    </style>
 </head>
-<style>
-  body{
-    background-image: url("/images/hero_1.jpg");
-  }
-</style>
 <body>
-	<div th:replace="fragment/header"></div>
+    <div th:replace="fragment/header"></div>
     <br>
     <div class="container">
         <div class="py-5 text-center">
-			<div class="h1">View Vendors</div>
-			<table class="table bordered">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Vendor Name</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!-- Loop through each vendor in the list -->
-					<th:block th:each="vendor : ${listVendors}">
-						<tr>
-							<td th:text="${vendor.vendorID}"></td>
-							<td th:text="${vendor.name}"></td>
-							<td>
+            <h2>View Vendors</h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Vendor Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through each vendor in the list -->
+                    <th:block th:each="vendor : ${listVendors}">
+                        <tr>
+                            <td th:text="${vendor.vendorID}"></td>
+                            <td th:text="${vendor.name}"></td>
+                            <td>
                                 <!-- Edit vendor link -->
-								<a th:href="@{/vendors/edit/{id}(id=${vendor.vendorID})}">Edit</a>
-								<!-- Delete coupon link (optional) -->
-                                <a th:href="@{/vendors/delete/{id}(id=${vendor.vendorID})}" onclick="return confirm('Are you sure you want to delete this coupon?')">Delete</a>
-                                
+                                <a class="btn btn-primary btn-sm" th:href="@{/vendors/edit/{id}(id=${vendor.vendorID})}">Edit</a>
+                                <!-- Delete vendor link (optional) -->
+                                <a class="btn btn-danger btn-sm" th:href="@{/vendors/delete/{id}(id=${vendor.vendorID})}" onclick="return confirm('Are you sure you want to delete this vendor?')">Delete</a>
                             </td>
-						</tr>
-					</th:block>
-				</tbody>
-			</table>
-            
-            <!-- Footer fragment replacement -->
-			<div th:replace="fragment/footer"></div>
-		</div>
-	</div>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:replace="fragment/footer"></div>
 </body>
 
 </html>

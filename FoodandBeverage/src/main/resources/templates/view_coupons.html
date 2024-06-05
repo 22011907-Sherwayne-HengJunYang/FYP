@@ -6,7 +6,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Make sure to include jQuery before Bootstrap's JavaScript -->
 </head>
-
+<style>
+  body {
+    background-image: url("/images/hero_1.jpg");
+  }
+</style>
 <body>
     <div th:replace="fragment/header"></div>
     <br>
@@ -14,16 +18,16 @@
         <div class="py-5 text-center">
             <h2>View Coupons</h2>
         </div>
-		<div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
-		    <p th:text="${errorMessage}"></p>
-		</div>
+        <div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
+            <p th:text="${errorMessage}"></p>
+        </div>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
                         <th>Coupon ID</th>
                         <th>Vendor Name</th>
-                        <th>Quantity</th> <!-- New column for Quantity -->
+                        <th>Quantity</th>
                         <th>Status</th>
                         <th>Issue Date</th>
                         <th>Expiry Date</th>
@@ -34,9 +38,9 @@
                     <!-- Loop through each coupon in the list -->
                     <th:block th:each="coupon : ${listCoupons}">
                         <tr>
-							<td th:text="${coupon.id}"></td>
+                            <td th:text="${coupon.id}"></td>
                             <td th:text="${coupon.vendor.name}"></td>
-                            <td th:text="${coupon.quantity}"></td> <!-- Display Quantity -->
+                            <td th:text="${coupon.quantity}"></td>
                             <td th:text="${coupon.status ? 'Valid' : 'Invalid'}"></td>
                             <td th:text="${#dates.format(coupon.issueDate, 'yyyy-MM-dd')}"></td>
                             <td th:text="${#dates.format(coupon.expiryDate, 'yyyy-MM-dd')}"></td>
@@ -46,13 +50,15 @@
                                 <!-- Delete coupon link (optional) -->
                                 <a class="btn btn-danger btn-sm" th:href="@{/coupons/delete/{id}(id=${coupon.id})}" onclick="return confirm('Are you sure you want to delete this coupon?')">Delete</a>
                                 <!-- Make coupon public button -->
-								<th:block th:if="${coupon.quantity > 0}">
-								    <form th:action="@{/makePublic}" method="post">
-								        <input type="hidden" name="id" th:value="${coupon.id}" />
-								        <input type="number" name="quantity" min="1" value="1" /> <!-- Quantity input -->
-								        <button type="submit" class="btn btn-warning btn-sm">Make Public</button>
-								    </form>
-								</th:block>
+                                <a class="nav-item" sec:authorize="hasRole('Issuer')">
+                                    <th:block th:if="${coupon.quantity > 0}">
+                                        <form th:action="@{/makePublic}" method="post">
+                                            <input type="hidden" name="id" th:value="${coupon.id}" />
+                                            <input type="number" name="quantity" min="1" value="1" />
+                                            <button type="submit" class="btn btn-warning btn-sm">Make Public</button>
+                                        </form>
+                                    </th:block>
+                                </a>
                             </td>
                         </tr>
                     </th:block>
@@ -62,7 +68,6 @@
     </div>
 
     <div th:replace="fragment/footer"></div>
-
 </body>
 
 </html>

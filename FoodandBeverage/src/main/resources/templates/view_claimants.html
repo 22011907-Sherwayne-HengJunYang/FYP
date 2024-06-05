@@ -6,9 +6,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Make sure to include jQuery before Bootstrap's JavaScript -->
 </head>
-
+<style>
+    body {
+        background-image: url("/images/hero_1.jpg");
+    }
+    .content-container {
+        margin-top: 20px; /* Adjust the value as needed */
+    }
+</style>
 <body>
-    <div class="container">
+    <div class="container content-container">
         <div th:replace="fragment/header"></div>
         <div class="py-5 text-center">
             <h2>View Claimants</h2>
@@ -49,7 +56,7 @@
 
     <footer class="footer bg-dark fixed-bottom">
         <div class="container text-center text-white">
-            <span>© 2024 Your Company. All rights reserved.</span>
+            <div th:replace="fragment/footer"></div>
         </div>
     </footer>
 </body>
