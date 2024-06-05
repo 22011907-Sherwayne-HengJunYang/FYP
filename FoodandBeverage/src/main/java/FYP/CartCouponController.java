@@ -46,7 +46,8 @@ public class CartCouponController {
     @PostMapping("/cart/process_order")
     public String processOrder(Model model,
                                @RequestParam("claimantId") int claimantId,
-                               @RequestParam("transactionId") String transactionId) {
+                               @RequestParam("transactionId") String transactionId,
+                               RedirectAttributes redirectAttributes) {
 
         // Generate a random order ID using UUID
         String orderId = UUID.randomUUID().toString();
@@ -54,12 +55,12 @@ public class CartCouponController {
         Claimant claimant = claimantRepo.getReferenceById(claimantId);
 
         List<CartCoupon> cartCouponList = cartCouponRepo.findByClaimant_Id(claimantId);
+        boolean orderProcessed = false;
 
         for (CartCoupon currCartCoupon : cartCouponList) {
             Coupon coupon2Update = currCartCoupon.getCoupon();
             int qtyOfCouponCollected = currCartCoupon.getQuantity();
             int coupon2UpdateId = coupon2Update.getId();
-            System.out.println("Item: " + coupon2Update.getDescription());
 
             // Check if the user already has this coupon in their inventory
             boolean alreadyInInventory = orderRepo.existsByClaimant_IdAndCoupon_Id(claimantId, coupon2UpdateId);
@@ -67,7 +68,6 @@ public class CartCouponController {
             if (!alreadyInInventory) {
                 Coupon inventoryCoupon = couponRepo.getReferenceById(coupon2UpdateId);
                 int currentInventoryQuantity = inventoryCoupon.getPublicQuantity();
-                System.out.println("Current inventory quantity: " + inventoryCoupon.getPublicQuantity());
                 inventoryCoupon.setPublicQuantity(currentInventoryQuantity - qtyOfCouponCollected);
                 couponRepo.save(inventoryCoupon);
 
@@ -78,20 +78,21 @@ public class CartCouponController {
                 orderCoupon.setOrderId(orderId);
                 orderCoupon.setTransactionId(transactionId);
                 orderRepo.save(orderCoupon);
+
+                orderProcessed = true;
             } else {
-                System.out.println("User " + claimantId + " already has coupon " + coupon2UpdateId + " in inventory.");
+                redirectAttributes.addFlashAttribute("inventoryError", "Coupon " + coupon2Update.getDescription() + " already exists in inventory.");
             }
 
             // Always remove from cart, even if it wasn't added to inventory
             cartCouponRepo.deleteById(currCartCoupon.getId());
         }
 
-        model.addAttribute("cartCouponList", cartCouponList);
-        model.addAttribute("claimant", claimant);
-        model.addAttribute("orderId", orderId);
-        model.addAttribute("transactionId", transactionId);
+        if (orderProcessed) {
+            redirectAttributes.addFlashAttribute("orderSuccess", "Order processed successfully.");
+        }
 
-        return "redirect:/cart";
+        return "redirect:/Inventory";
     }
 
     @PostMapping("/cart/add/{couponId}")
@@ -131,7 +132,7 @@ public class CartCouponController {
             redirectAttributes.addFlashAttribute("addError", "User not logged in or invalid user type.");
         }
 
-        return "redirect:/publicCoupons";
+        return "redirect:/cart";
     }
 
     @PostMapping("/cart/remove/{id}")
@@ -143,8 +144,14 @@ public class CartCouponController {
 
     @GetMapping("/Inventory")
     public String viewInventory(Model model) {
-        List<OrderCoupon> listOrders = orderRepo.findAll();
+        // Get currently logged in user
+        ClaimantDetails loggedInClaimant = (ClaimantDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int loggedInClaimantId = loggedInClaimant.getClaimant().getId();
+
+        // Fetch only the orders for the logged-in user
+        List<OrderCoupon> listOrders = orderRepo.findByClaimant_Id(loggedInClaimantId);
         model.addAttribute("listOrders", listOrders);
+
         return "Inventory";
     }
 }
