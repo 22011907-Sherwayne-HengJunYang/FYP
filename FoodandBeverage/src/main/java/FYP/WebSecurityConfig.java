@@ -64,14 +64,13 @@ public class WebSecurityConfig {
 				.requestMatchers("/coupons").hasAnyRole("Issuer","Vendor","Admin")
 				.requestMatchers("/makePublic").hasRole("Issuer")																			
 				.requestMatchers("/coupons/add", "/coupons/edit/*", "/coupons/save", "/coupons/delete").hasRole("Vendor")																					// logging
-				.requestMatchers("/cart","/cart/process_order","/Inventory","/cart","/cart/process_order").hasRole("Claimant")
+				.requestMatchers("/cart","/cart/process_order","/Inventory","/cart","/cart/process_order","/redeem").hasRole("Claimant")
 				.requestMatchers("/publicCoupons").permitAll()
 				.requestMatchers("/aboutus").permitAll() // about page is visible without logging in
 				.requestMatchers("/signup").permitAll().requestMatchers("/signup/save").permitAll() // about page is
 				.requestMatchers("footer.html").permitAll()																			// visible without
 				.requestMatchers("header.html").permitAll()
-				.requestMatchers("redeemResult.html").permitAll()		
-				.requestMatchers("redeem.html").permitAll()		
+				
 				// logging in
 				.requestMatchers("/").permitAll() 
 				.requestMatchers("/bootstrap/*/*").permitAll() // for static resources, visible to all

@@ -6,9 +6,18 @@
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <script src="/bootstrap/js/bootstrap.min.js"></script>
 </head>
+<style>
+  body {
+    background-image: url("/images/hero_1.jpg");
+  }
+</style>
 
 <body>
     <div class="container">
+		<div th:replace="fragment/header"></div>
+					<br>
+					<br>
+					<br>
         <h1>Add Coupon</h1>
 
         <form th:action="@{/coupons/save}" method="post" th:object="${coupon}">
