@@ -139,4 +139,28 @@ public class CouponController {
         // Return the view for viewing public coupons
         return "publicCoupons";
     }
+    
+    @GetMapping("/redeem")
+    public String redeem() {
+        return "redeem";
+    }
+    
+    @PostMapping("/redeemCode")
+    public String redeemCoupon(String redeemCode, Model model) {
+        Coupon coupon = CouponRepository.findByRedeemCode(redeemCode);
+        
+        if (coupon != null) {
+            if (!coupon.isStatus()) { // Check if the coupon is already redeemed
+                model.addAttribute("message", "Coupon has already been redeemed!");
+            } else {
+                coupon.setStatus(false); // Set status to invalid (redeemed)
+                CouponRepository.save(coupon);
+                model.addAttribute("message", "Coupon redeemed successfully!");
+            }
+        } else {
+            model.addAttribute("message", "Invalid redeem code!");
+        }
+        return "redeem";
+    
+    }
 }

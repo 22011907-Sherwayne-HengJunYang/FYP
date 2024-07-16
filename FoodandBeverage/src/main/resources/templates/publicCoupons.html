@@ -31,7 +31,7 @@
                         <th>Coupon ID</th>
                         <th>Vendor Name</th>
                         <th>Availability</th>
-                        <th>Status</th>
+                        
                         <th>Issue Date</th>
                         <th>Expiry Date</th>
                         <th>Actions</th>
@@ -45,7 +45,7 @@
                                 <td th:text="${coupon.id}"></td>
                                 <td th:text="${coupon.vendor.name}"></td>
                                 <td th:text="${coupon.publicQuantity}"></td>
-                                <td th:text="${coupon.status ? 'Valid' : 'Invalid'}"></td>
+                               
                                 <td th:text="${#dates.format(coupon.issueDate, 'yyyy-MM-dd')}"></td>
                                 <td th:text="${#dates.format(coupon.expiryDate, 'yyyy-MM-dd')}"></td>
                                 <td>

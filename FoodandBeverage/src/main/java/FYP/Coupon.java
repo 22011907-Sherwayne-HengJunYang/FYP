@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,7 +38,6 @@ public class Coupon {
     @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderCoupon> orderCoupons;
 
-    
     // Default constructor
     public Coupon() {
         this.issueDate = new Date(); // Sets issue date to the current date and time
@@ -59,9 +57,9 @@ public class Coupon {
     // Method to generate random redeem code
     private String generateRedeemCode() {
         SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[24]; // 24 bytes = 192 bits
+        byte[] bytes = new byte[9]; // 9 bytes to ensure the encoded string is approximately 12 characters long
         random.nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes).substring(0, 12);
     }
 
     // Getters and setters
@@ -126,6 +124,7 @@ public class Coupon {
     public String getStatusString() {
         return status ? "valid" : "invalid";
     }
+    
     public int getId() {
         return id;
     }
@@ -134,19 +133,19 @@ public class Coupon {
         this.id = id;
     }
 
-	public int getPublicQuantity() {
-		return publicQuantity;
-	}
+    public int getPublicQuantity() {
+        return publicQuantity;
+    }
 
-	public void setPublicQuantity(int publicQuantity) {
-		this.publicQuantity = publicQuantity;
-	}
+    public void setPublicQuantity(int publicQuantity) {
+        this.publicQuantity = publicQuantity;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

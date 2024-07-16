@@ -69,7 +69,10 @@ public class WebSecurityConfig {
 				.requestMatchers("/aboutus").permitAll() // about page is visible without logging in
 				.requestMatchers("/signup").permitAll().requestMatchers("/signup/save").permitAll() // about page is
 				.requestMatchers("footer.html").permitAll()																			// visible without
-				.requestMatchers("header.html").permitAll()																					// logging in
+				.requestMatchers("header.html").permitAll()
+				.requestMatchers("redeemResult.html").permitAll()		
+				.requestMatchers("redeem.html").permitAll()		
+				// logging in
 				.requestMatchers("/").permitAll() 
 				.requestMatchers("/bootstrap/*/*").permitAll() // for static resources, visible to all
 				.requestMatchers("login.css").permitAll() // for static resources, visible to all

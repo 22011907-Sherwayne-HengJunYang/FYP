@@ -23,6 +23,7 @@
 				<div class="col">Description</div>
 				<div class="col">Vendor</div>
 				<div class="col">Status</div>
+				<div class="col">Code</div>
 			</div>
 			<div class="row m-3" th:each="OrderCoupon : ${listOrders}">
 				<!-- Display purchase history details... -->
@@ -30,10 +31,13 @@
 				<div class="col" th:text="${OrderCoupon.coupon.expiryDate}"></div>
 				<div class="col" th:text="${OrderCoupon.coupon.description}"></div>
 				<div class="col" th:text="${OrderCoupon.coupon.vendor.name}"></div>
-				<div class="col" th:text="${OrderCoupon.coupon.status ? 'Valid' : 'Invalid'}"></div>
+				<div class="col" th:text="${OrderCoupon.coupon.status ? 'Available' : 'Redeemed'}"></div>
+				<div class="col" th:text="${OrderCoupon.coupon.redeemCode}"></div>
+				
 			</div>
 		</main>
 		<div th:replace="fragment/footer"></div>
+		
 	</div>
 </body>
 </html>
