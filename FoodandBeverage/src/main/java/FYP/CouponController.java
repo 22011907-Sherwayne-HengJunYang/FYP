@@ -57,7 +57,7 @@ public class CouponController {
             return "add_coupon";
         }
         // Set the issueDate and expiryDate before saving
-        coupon.setIssueDate(new Date()); // Sets the issue date to the current date
+        coupon.setIssueDate(new Date()); // Set the issue date to the current date
         coupon.calculateExpiryDate(calculateExpiryDate(coupon.getIssueDate()));
         
         CouponRepository.save(coupon);

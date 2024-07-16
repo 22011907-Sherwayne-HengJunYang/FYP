@@ -149,7 +149,7 @@ public class CartCouponController {
 
     @GetMapping("/Inventory")
     public String viewInventory(Model model) {
-        // Get currently logged in user
+        // Get currently logged in users
         ClaimantDetails loggedInClaimant = (ClaimantDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int loggedInClaimantId = loggedInClaimant.getClaimant().getId();
 

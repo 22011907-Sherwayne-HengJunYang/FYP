@@ -79,7 +79,7 @@ public class OrderCoupon {
         this.redeemCode = redeemCode;
     }
 
-    // Method to generate a random redeem code for the OrderCoupon
+    // Method to generate a random redeem code for the OrderCoupo
     public void generateRedeemCode() {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[9]; // 9 bytes to ensure the encoded string is approximately 12 characters long

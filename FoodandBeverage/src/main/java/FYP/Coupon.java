@@ -23,7 +23,7 @@ public class Coupon {
     private int publicQuantity;
     private String description;
     
-    // Date fields
+    // Date field
     private Date issueDate;
     private Date expiryDate;
 
