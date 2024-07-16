@@ -10,5 +10,7 @@ public interface OrderCouponRepository extends JpaRepository<OrderCoupon, Intege
 	public List<OrderCoupon>findByClaimant_Id(int claimantId);
 	
 	boolean existsByClaimant_IdAndCoupon_Id(int claimantId, int couponId);
+
+	OrderCoupon findByRedeemCode(String redeemCode);
 }
 

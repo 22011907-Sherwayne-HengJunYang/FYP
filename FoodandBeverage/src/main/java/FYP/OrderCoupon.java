@@ -6,77 +6,84 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 @Entity
 public class OrderCoupon {
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	
-	private String orderId;
-	private String transactionId;
-	
-	@ManyToOne
-	@JoinColumn(name="claimant_id")
-	private Claimant claimant;
-	
-	@ManyToOne
-	@JoinColumn(name="coupon_id")
-	private Coupon coupon;
-	
-	private int quantity;
-	
-	public Vendor getVendor() {
-		return this.coupon.getVendor();
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private boolean status = true;
 
-	public int getId() {
-		return id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "claimant_id")
+    private Claimant claimant;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "coupon_id")
+    private Coupon coupon;
 
-	public String getOrderId() {
-		return orderId;
-	}
+    private int quantity;
 
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
+    private String redeemCode; // Redeem code field for OrderCoupon
+    
+    public Vendor getVendor() {
+        return this.coupon.getVendor();
+    }
+    public boolean isStatus() {
+        return status;
+    }
 
-	public String getTransactionId() {
-		return transactionId;
-	}
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
-	public void setTransactionId(String transactionId) {
-		this.transactionId = transactionId;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public Claimant getClaimant() {
-		return claimant;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setClaimant(Claimant claimant) {
-		this.claimant = claimant;
-	}
+    public Claimant getClaimant() {
+        return claimant;
+    }
 
-	public Coupon getCoupon() {
-		return coupon;
-	}
+    public void setClaimant(Claimant claimant) {
+        this.claimant = claimant;
+    }
 
-	public void setCoupon(Coupon coupon) {
-		this.coupon = coupon;
-	}
+    public Coupon getCoupon() {
+        return coupon;
+    }
 
-	public int getQuantity() {
-		return quantity;
-	}
+    public void setCoupon(Coupon coupon) {
+        this.coupon = coupon;
+    }
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-	
+    public int getQuantity() {
+        return quantity;
+    }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getRedeemCode() {
+        return redeemCode;
+    }
+
+    public void setRedeemCode(String redeemCode) {
+        this.redeemCode = redeemCode;
+    }
+
+    // Method to generate a random redeem code for the OrderCoupon
+    public void generateRedeemCode() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[9]; // 9 bytes to ensure the encoded string is approximately 12 characters long
+        random.nextBytes(bytes);
+        this.redeemCode = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes).substring(0, 12);
+    }
 }

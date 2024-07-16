@@ -1,6 +1,4 @@
 package FYP;
-import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -29,8 +27,7 @@ public class Coupon {
     private Date issueDate;
     private Date expiryDate;
 
-    private String redeemCode;
-    
+  
     @ManyToOne
     @JoinColumn(name = "vendor_id", nullable = false)
     private Vendor vendor;
@@ -43,7 +40,7 @@ public class Coupon {
         this.issueDate = new Date(); // Sets issue date to the current date and time
         this.expiryDate = calculateExpiryDate(this.issueDate);
         this.status = true; // Initial status can be set as per your preference (e.g. true or false)
-        this.redeemCode = generateRedeemCode(); // Generate random redeem code
+     
     }
 
     // Method to calculate the expiry date
@@ -52,14 +49,6 @@ public class Coupon {
         calendar.setTime(issueDate);
         calendar.add(Calendar.DAY_OF_MONTH, 30); // Adds 30 days to the issue date
         return calendar.getTime();
-    }
-
-    // Method to generate random redeem code
-    private String generateRedeemCode() {
-        SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[9]; // 9 bytes to ensure the encoded string is approximately 12 characters long
-        random.nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes).substring(0, 12);
     }
 
     // Getters and setters
@@ -104,14 +93,6 @@ public class Coupon {
         this.expiryDate = expiryDate;
     }
 
-    public String getRedeemCode() {
-        return redeemCode;
-    }
-
-    public void setRedeemCode(String redeemCode) {
-        this.redeemCode = redeemCode;
-    }
-    
     public boolean isPublicCoupon() {
         return publicCoupon;
     }
@@ -122,7 +103,7 @@ public class Coupon {
     
     // Method to get the string representation of the status
     public String getStatusString() {
-        return status ? "valid" : "invalid";
+        return status ? "Available" : "Redeemed";
     }
     
     public int getId() {

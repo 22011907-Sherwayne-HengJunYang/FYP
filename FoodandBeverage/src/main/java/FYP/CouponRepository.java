@@ -20,7 +20,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CouponRepository extends JpaRepository<Coupon, Integer> {
 	 List<Coupon> findByPublicCoupon(boolean publicCoupon);
-	 Coupon findByRedeemCode(String redeemCode);
+	 
 	 
 }
 //

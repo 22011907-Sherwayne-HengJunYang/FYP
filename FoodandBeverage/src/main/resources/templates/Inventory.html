@@ -31,8 +31,8 @@
 				<div class="col" th:text="${OrderCoupon.coupon.expiryDate}"></div>
 				<div class="col" th:text="${OrderCoupon.coupon.description}"></div>
 				<div class="col" th:text="${OrderCoupon.coupon.vendor.name}"></div>
-				<div class="col" th:text="${OrderCoupon.coupon.status ? 'Available' : 'Redeemed'}"></div>
-				<div class="col" th:text="${OrderCoupon.coupon.redeemCode}"></div>
+				<div class="col" th:text="${OrderCoupon.status ? 'Available' : 'Redeemed'}"></div>
+				<div class="col" th:text="${OrderCoupon.redeemCode}"></div>
 				
 			</div>
 		</main>

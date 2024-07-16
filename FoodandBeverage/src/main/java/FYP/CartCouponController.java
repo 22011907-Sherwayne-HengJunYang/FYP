@@ -1,8 +1,9 @@
 package FYP;
 
 import java.security.Principal;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +29,13 @@ public class CartCouponController {
 
     @Autowired
     private OrderCouponRepository orderRepo;
+    
+    private String generateRedeemCode() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[9]; // 9 bytes to ensure the encoded string is approximately 12 characters long
+        random.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes).substring(0, 12);
+    }
 
     @GetMapping("/cart")
     public String showCart(Model model, Principal principal) {
@@ -49,8 +57,6 @@ public class CartCouponController {
                                @RequestParam("transactionId") String transactionId,
                                RedirectAttributes redirectAttributes) {
 
-        // Generate a random order ID using UUID
-        String orderId = UUID.randomUUID().toString();
 
         Claimant claimant = claimantRepo.getReferenceById(claimantId);
 
@@ -75,8 +81,7 @@ public class CartCouponController {
                 orderCoupon.setClaimant(claimant);
                 orderCoupon.setCoupon(coupon2Update);
                 orderCoupon.setQuantity(qtyOfCouponCollected);
-                orderCoupon.setOrderId(orderId);
-                orderCoupon.setTransactionId(transactionId);
+                orderCoupon.setRedeemCode(generateRedeemCode());
                 orderRepo.save(orderCoupon);
 
                 orderProcessed = true;
@@ -153,5 +158,28 @@ public class CartCouponController {
         model.addAttribute("listOrders", listOrders);
 
         return "Inventory";
+    }
+    @GetMapping("/redeem")
+    public String redeem() {
+        return "redeem";
+    }
+    
+    @PostMapping("/redeemCode")
+    public String redeemCoupon(String redeemCode, Model model) {
+        OrderCoupon coupon = orderRepo.findByRedeemCode(redeemCode);
+        
+        if (coupon != null) {
+            if (!coupon.isStatus()) { // Check if the coupon is already redeemed
+                model.addAttribute("message", "Coupon has already been redeemed!");
+            } else {
+                coupon.setStatus(false); // Set status to invalid (redeemed)
+                orderRepo.save(coupon);
+                model.addAttribute("message", "Coupon redeemed successfully!");
+            }
+        } else {
+            model.addAttribute("message", "Invalid redeem code!");
+        }
+        return "redeem";
+    
     }
 }
