@@ -6,8 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Date;
 
 @Entity
 public class OrderCoupon {
@@ -15,6 +18,12 @@ public class OrderCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private boolean status = true;
+
+    @Temporal(TemporalType.DATE)
+    private Date claimdate;
+    
+    @Temporal(TemporalType.DATE)
+    private Date redeemdate;
 
     @ManyToOne
     @JoinColumn(name = "claimant_id")
@@ -31,6 +40,7 @@ public class OrderCoupon {
     public Vendor getVendor() {
         return this.coupon.getVendor();
     }
+    
     public boolean isStatus() {
         return status;
     }
@@ -79,7 +89,23 @@ public class OrderCoupon {
         this.redeemCode = redeemCode;
     }
 
-    // Method to generate a random redeem code for the OrderCoupo
+    public Date getClaimdate() {
+        return claimdate;
+    }
+
+    public void setClaimdate(Date claimdate) {
+        this.claimdate = claimdate;
+    }
+
+    public Date getRedeemdate() {
+        return redeemdate;
+    }
+
+    public void setRedeemdate(Date redeemdate) {
+        this.redeemdate = redeemdate;
+    }
+
+    // Method to generate a random redeem code for the OrderCoupon
     public void generateRedeemCode() {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[9]; // 9 bytes to ensure the encoded string is approximately 12 characters long

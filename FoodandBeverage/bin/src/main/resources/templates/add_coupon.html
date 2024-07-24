@@ -6,9 +6,18 @@
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <script src="/bootstrap/js/bootstrap.min.js"></script>
 </head>
+<style>
+  body {
+    background-image: url("/images/hero_1.jpg");
+  }
+</style>
 
 <body>
     <div class="container">
+		<div th:replace="fragment/header"></div>
+					<br>
+					<br>
+					<br>
         <h1>Add Coupon</h1>
 
         <form th:action="@{/coupons/save}" method="post" th:object="${coupon}">
@@ -24,8 +33,8 @@
             <div class="form-group">
                 <label for="status">Status</label>
                 <select class="form-control" id="status" name="status" th:field="*{status}">
-                    <option th:value="true" th:text="Valid"></option>
-                    <option th:value="false" th:text="Invalid"></option>
+                    <option th:value="true" th:text="Available"></option>
+                    <option th:value="false" th:text="Redeemed"></option>
                 </select>
             </div>
             
@@ -33,6 +42,13 @@
             <div class="form-group">
                 <label for="quantity">Quantity</label>
                 <input type="number" class="form-control" id="quantity" name="quantity" th:field="*{quantity}" required>
+            </div>
+
+            <!-- Description Field -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" th:field="*{description}" rows="3" minlength="10" required></textarea>
+                <div class="invalid-feedback">Description must be at least 10 characters long.</div>
             </div>
 
             <!-- Submit and Cancel Buttons -->

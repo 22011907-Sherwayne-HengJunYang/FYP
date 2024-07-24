@@ -16,17 +16,16 @@
 <body>
   <div th:replace="fragment/header"></div>
   <br>
-  <br>
-  <br>
   <div class="container">
+        <div class="py-5 text-center">
+			<div class="h1">Welcome to Couponify!</div>
     <main>
-      <h1>Welcome to Coupon!</h1>
 	  <div sec:authorize="isAuthenticated()">
 	  	<h4 class="text-center">Hello <span sec:authentication="principal.username"></span>!</h4>
 	  </div>
     </main>
   </div>
-  
+  </div>
   <div th:replace="fragment/footer"></div>
   
 </body>

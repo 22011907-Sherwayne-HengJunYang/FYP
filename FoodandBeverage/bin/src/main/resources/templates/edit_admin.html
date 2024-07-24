@@ -2,15 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Coupon - Edit Admin</title>
+    <title>Edit Admin</title>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <script src="/bootstrap/js/bootstrap.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Edit Admin</h1>
-			        <form th:action="@{/admins/save}" method="post" th:object="${admin}">
-            <!-- Hidden field for Admin ID -->
+        <form th:action="@{/admins/edit/{id}(id=${admin.adminID})}" method="post" th:object="${admin}">
             <!-- Hidden field for Admin ID -->
             <input type="hidden" th:field="*{adminID}" />
 
@@ -18,9 +17,24 @@
                 <label for="admin_name">Name:</label>
                 <input id="admin_name" type="text" class="form-control" th:field="*{name}" />
             </div>
-
+            <div class="form-group">
+                <label for="admin_username">Username:</label>
+                <input id="admin_username" type="text" class="form-control" th:field="*{username}" />
+            </div>
+            <div class="form-group">
+                <label for="admin_password">Password:</label>
+                <input id="admin_password" type="password" class="form-control" th:field="*{password}" />
+            </div>
+            <div class="form-group">
+                <label for="admin_email">Email:</label>
+                <input id="admin_email" type="text" class="form-control" th:field="*{email}" />
+            </div>
+            <!-- Role field is not editable -->
+            <div class="form-group">
+                <label for="admin_role">Role:</label>
+                <input id="admin_role" type="text" class="form-control" th:value="${admin.role}" readonly="readonly" />
+            </div>
             <!-- Add more fields for the admin as needed -->
-            <!-- Prepopulate other fields as necessary for editing -->
 
             <div class="mt-3">
                 <button type="submit" class="btn btn-primary">Update</button>

@@ -5,37 +5,57 @@
     <title>Public Coupons</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-
+<style>
+  body {
+    background-image: url("/images/hero_1.jpg");
+  }
+</style>
 <body>
     <div th:replace="fragment/header"></div>
     <br>
     <div class="container">
         <div class="py-5 text-center">
-            <h2>Public Coupons</h2>
+            <h2>View Public Coupons</h2>
         </div>
+
+        <!-- Feedback messages -->
+        <div class="alert alert-success" th:if="${addSuccess}" role="alert">
+            Coupon added to cart successfully!
+        </div>
+        <div class="alert alert-danger" th:if="${addError}" role="alert" th:text="${addError}"></div>
+
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
                         <th>Coupon ID</th>
                         <th>Vendor Name</th>
-						<th>Availability</th>
-                        <th>Status</th>
+                        <th>Availability</th>
+                        
                         <th>Issue Date</th>
                         <th>Expiry Date</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Loop through each public coupon in the list -->
+                    <!-- Loop through each public coupon in the list and only show if publicQuantity > 0 -->
                     <th:block th:each="coupon : ${publicCoupons}">
-                        <tr>
-                            <td th:text="${coupon.couponID}"></td>
-                            <td th:text="${coupon.vendor.name}"></td>
-							<td th:text="${coupon.publicQuantity}"></td>
-                            <td th:text="${coupon.status ? 'Valid' : 'Invalid'}"></td>
-                            <td th:text="${#dates.format(coupon.issueDate, 'yyyy-MM-dd')}"></td>
-                            <td th:text="${#dates.format(coupon.expiryDate, 'yyyy-MM-dd')}"></td>
-                        </tr>
+                        <th:block th:if="${coupon.publicQuantity > 0}">
+                            <tr>
+                                <td th:text="${coupon.id}"></td>
+                                <td th:text="${coupon.vendor.name}"></td>
+                                <td th:text="${coupon.publicQuantity}"></td>
+                               
+                                <td th:text="${#dates.format(coupon.issueDate, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${#dates.format(coupon.expiryDate, 'yyyy-MM-dd')}"></td>
+                                <td>
+                                    <form id="collect-form" th:action="@{/cart/add/{couponId}(couponId=${coupon.id})}" method="post">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn btn-primary">Collect</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </th:block>
                     </th:block>
                 </tbody>
             </table>
@@ -43,7 +63,5 @@
     </div>
 
     <div th:replace="fragment/footer"></div>
-
 </body>
-
 </html>

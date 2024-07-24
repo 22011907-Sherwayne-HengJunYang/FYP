@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Coupon - Add New Admin!</title>
+    <title>Couponify - Add New Admin!</title>
     
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <script src="/bootstrap/js/bootstrap.js"></script>
@@ -10,36 +10,105 @@
 <body>
     <div class="container">
         <h1>Add New Admin</h1>
-        <form th:action="@{/admins/save}" method="post" th:object="${admin}">
+        <form class="needs-validation" novalidate th:action="@{/admins/save}" method="post" th:object="${admin}" onsubmit="return validateForm()">
             <!-- Hidden field for Admin ID -->
             <input type="hidden" th:field="*{adminID}" />
 
             <div class="form-group">
                 <label for="admin_name">Name:</label>
-                <input id="admin_name" type="text" class="form-control" th:field="*{name}" />
+                <input id="admin_name" type="text" class="form-control" th:field="*{name}" required pattern="^[A-Za-z\s]+$" />
+                <div class="invalid-feedback">Please enter a valid name (letters only).</div>
             </div>
 
             <div class="form-group">
                 <label for="admin_username">Username:</label>
-                <input id="admin_username" type="text" class="form-control" th:field="*{username}" />
+                <input id="admin_username" type="text" class="form-control" th:field="*{username}" required minlength="4" />
+                <div class="invalid-feedback">Username must be at least 4 characters long.</div>
             </div>
 
             <div class="form-group">
                 <label for="admin_email">Email:</label>
-                <input id="admin_email" type="email" class="form-control" th:field="*{email}" />
+                <input id="admin_email" type="email" class="form-control" th:field="*{email}" required />
+                <div class="invalid-feedback">Please enter a valid email address.</div>
             </div>
 
             <div class="form-group">
                 <label for="admin_password">Password:</label>
-                <input id="admin_password" type="password" class="form-control" th:field="*{password}" />
+                <input id="admin_password" type="password" class="form-control" th:field="*{password}" required pattern="^(?=.*[A-Z])(?=.*\d).+$" />
+                <div class="invalid-feedback">Password must contain at least 1 uppercase letter and 1 number.</div>
             </div>
-
-            <!-- Add more fields for the admin as needed -->
 
             <div class="mt-3">
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>
         </form>
     </div>
+
+    <script>
+        'use strict'
+
+        // Fetch the form element
+        var form = document.querySelector('.needs-validation')
+
+        // Add a submit event listener to the form
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+        })
+
+        function validateForm() {
+            var nameField = document.getElementById('admin_name');
+            var usernameField = document.getElementById('admin_username');
+            var emailField = document.getElementById('admin_email');
+            var passwordField = document.getElementById('admin_password');
+            
+            var namePattern = /^[A-Za-z\s]+$/;
+            var passwordPattern = /^(?=.*[A-Z])(?=.*\d).+$/;
+            
+            var valid = true;
+
+            if (!namePattern.test(nameField.value)) {
+                nameField.setCustomValidity('Invalid');
+                nameField.classList.add('is-invalid');
+                valid = false;
+            } else {
+                nameField.setCustomValidity('');
+                nameField.classList.remove('is-invalid');
+            }
+
+            if (usernameField.value.length < 4) {
+                usernameField.setCustomValidity('Invalid');
+                usernameField.classList.add('is-invalid');
+                valid = false;
+            } else {
+                usernameField.setCustomValidity('');
+                usernameField.classList.remove('is-invalid');
+            }
+
+            if (!emailField.value.includes('@')) {
+                emailField.setCustomValidity('Invalid');
+                emailField.classList.add('is-invalid');
+                valid = false;
+            } else {
+                emailField.setCustomValidity('');
+                emailField.classList.remove('is-invalid');
+            }
+
+            if (!passwordPattern.test(passwordField.value)) {
+                passwordField.setCustomValidity('Invalid');
+                passwordField.classList.add('is-invalid');
+                valid = false;
+            } else {
+                passwordField.setCustomValidity('');
+                passwordField.classList.remove('is-invalid');
+            }
+
+            return valid;
+        }
+    </script>
 </body>
 </html>

@@ -165,21 +165,25 @@ public class CartCouponController {
     }
     
     @PostMapping("/redeemCode")
-    public String redeemCoupon(String redeemCode, Model model) {
-        OrderCoupon coupon = orderRepo.findByRedeemCode(redeemCode);
+    public String redeemCoupon(@RequestParam("redeemCode") String redeemCode, Model model) {
+        OrderCoupon orderCoupon = orderRepo.findByRedeemCode(redeemCode);
         
-        if (coupon != null) {
-            if (!coupon.isStatus()) { // Check if the coupon is already redeemed
+        if (orderCoupon != null) {
+            if (!orderCoupon.isStatus()) { // Check if the coupon is already redeemed
                 model.addAttribute("message", "Coupon has already been redeemed!");
             } else {
-                coupon.setStatus(false); // Set status to invalid (redeemed)
-                orderRepo.save(coupon);
+                Coupon coupon = orderCoupon.getCoupon();
+                coupon.setQuantityRedeemed(coupon.getQuantityRedeemed() + 1); // Increment the redeemed quantity
+                couponRepo.save(coupon); // Save the updated coupon
+                
+                orderCoupon.setStatus(false); // Set status to invalid (redeemed)
+                orderRepo.save(orderCoupon); // Save the updated order coupon
+                
                 model.addAttribute("message", "Coupon redeemed successfully!");
             }
         } else {
             model.addAttribute("message", "Invalid redeem code!");
         }
         return "redeem";
-    
     }
 }

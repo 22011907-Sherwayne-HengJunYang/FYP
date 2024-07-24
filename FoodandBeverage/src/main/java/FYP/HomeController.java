@@ -13,4 +13,9 @@ public class HomeController {
     public String error403() {
         return "403";
     }
+    
+    @GetMapping("/graph")
+    public String graph() {
+        return "graph";
+    }
 }

@@ -63,7 +63,7 @@ public class WebSecurityConfig {
 				.hasRole("Admin")
 				.requestMatchers("/coupons").hasAnyRole("Issuer","Vendor","Admin")
 				.requestMatchers("/makePublic").hasRole("Issuer")																			
-				.requestMatchers("/coupons/add", "/coupons/edit/*", "/coupons/save", "/coupons/delete").hasRole("Vendor")																					// logging
+				.requestMatchers("/coupons/add", "/coupons/edit/*", "/coupons/save", "/coupons/delete","/graph").hasRole("Vendor")																					// logging
 				.requestMatchers("/cart","/cart/process_order","/Inventory","/cart","/cart/process_order","/redeem").hasRole("Claimant")
 				.requestMatchers("/publicCoupons").permitAll()
 				.requestMatchers("/aboutus").permitAll() // about page is visible without logging in
