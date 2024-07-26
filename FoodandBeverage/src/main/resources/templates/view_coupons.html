@@ -4,7 +4,6 @@
 <head>
     <title>Coupon - View Coupons!</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Make sure to include jQuery before Bootstrap's JavaScript -->
 </head>
 <style>
   body {
@@ -28,7 +27,6 @@
                         <th>Coupon ID</th>
                         <th>Vendor Name</th>
                         <th>Quantity</th>
-                        
                         <th>Issue Date</th>
                         <th>Expiry Date</th>
                         <th>Action</th>
@@ -41,7 +39,6 @@
                             <td th:text="${coupon.id}"></td>
                             <td th:text="${coupon.vendor.name}"></td>
                             <td th:text="${coupon.quantity}"></td>
-                            
                             <td th:text="${#dates.format(coupon.issueDate, 'yyyy-MM-dd')}"></td>
                             <td th:text="${#dates.format(coupon.expiryDate, 'yyyy-MM-dd')}"></td>
                             <td>
@@ -65,9 +62,28 @@
                 </tbody>
             </table>
         </div>
-    </div>
 
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/coupons(page=${currentPage - 1})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == currentPage} ? 'active'">
+                    <a class="page-link" th:href="@{/coupons(page=${i})}" th:text="${i}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="@{/coupons(page=${currentPage + 1})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+	<br>
+	<br>
     <div th:replace="fragment/footer"></div>
 </body>
-
 </html>

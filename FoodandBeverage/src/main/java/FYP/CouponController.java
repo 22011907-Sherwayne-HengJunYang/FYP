@@ -17,11 +17,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import jakarta.validation.Valid;
 
 @Controller
 public class CouponController {
+	@Autowired
+    private CouponService couponService;
 
     @Autowired
     private CouponRepository couponRepository;
@@ -31,9 +35,15 @@ public class CouponController {
 
     // View all coupons
     @GetMapping("/coupons")
-    public String viewCoupons(Model model) {
-        List<Coupon> listCoupons = couponRepository.findAll();
-        model.addAttribute("listCoupons", listCoupons);
+    public String viewCoupons(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        int pageSize = 8; // Define the size of the page
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        Page<Coupon> couponPage = couponService.findCoupons(pageRequest);
+
+        model.addAttribute("listCoupons", couponPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", couponPage.getTotalPages());
+
         return "view_coupons";
     }
 
@@ -138,10 +148,17 @@ public class CouponController {
     }
 
     // Handler for viewing public coupons
+
     @GetMapping("/publicCoupons")
-    public String viewPublicCoupons(Model model) {
-        List<Coupon> publicCoupons = couponRepository.findByPublicCoupon(true);
-        model.addAttribute("publicCoupons", publicCoupons);
+    public String viewPublicCoupons(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        int pageSize = 10; // Define the size of the page
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        Page<Coupon> couponPage = couponService.findPublicCoupons(pageRequest);
+
+        model.addAttribute("publicCoupons", couponPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", couponPage.getTotalPages());
+
         return "publicCoupons";
     }
 }

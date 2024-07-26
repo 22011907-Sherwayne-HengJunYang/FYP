@@ -1,31 +1,36 @@
 package FYP;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 
 @Controller
 public class VendorController {
-
-    @Autowired
+	@Autowired
     private VendorRepository vendorRepository;
 
-    @GetMapping("/vendors")
-    public String viewVendors(Model model) {
-        // Retrieve all vendors from the database
-        List<Vendor> listVendors = vendorRepository.findAll();
+	@Autowired
+    private VendorService vendorService;
 
-        /// Add the list of vendors to the model
-        model.addAttribute("listVendors", listVendors);
-        
-        // Return the view to display the list of vendors
+    @GetMapping("/vendors")
+    public String viewVendors(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        int pageSize = 10; // Define the size of the page
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        Page<Vendor> vendorPage = vendorService.findVendors(pageRequest);
+
+        model.addAttribute("listVendors", vendorPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", vendorPage.getTotalPages());
+
         return "view_vendors";
     }
 
@@ -49,6 +54,7 @@ public class VendorController {
         vendorRepository.save(vendor);
         
         // Redirect to the vendors page to see the updated list
+        
         return "redirect:/vendors";
     }
 
