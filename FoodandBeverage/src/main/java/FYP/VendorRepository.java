@@ -9,4 +9,6 @@ public interface VendorRepository extends JpaRepository<Vendor, Integer> {
 	Vendor findByUsername(String username);
     /// Add custom query methods if needed
 	Page<Vendor> findAll(Pageable pageable);
+	Page<Vendor> findByNameContaining(String name, Pageable pageable);
+	
 }

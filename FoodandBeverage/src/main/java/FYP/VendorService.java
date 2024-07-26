@@ -14,5 +14,12 @@ public class VendorService {
     public Page<Vendor> findVendors(Pageable pageable) {
         return vendorRepository.findAll(pageable);
     }
-}
 
+    public Page<Vendor> searchVendors(String name, Pageable pageable) {
+        if (name != null && !name.isEmpty()) {
+            return vendorRepository.findByNameContaining(name, pageable);
+        } else {
+            return vendorRepository.findAll(pageable);
+        }
+    }
+}
