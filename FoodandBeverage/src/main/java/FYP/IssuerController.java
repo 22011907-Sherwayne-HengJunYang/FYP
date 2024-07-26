@@ -1,31 +1,34 @@
 package FYP;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 @Controller
 public class IssuerController {
+	@Autowired
+    private IssuerService issuerService;
  
     @Autowired
     private IssuerRepository issuerRepository;
 
     @GetMapping("/issuer")
-    public String viewIssuer(Model model) {
-        // Retrieve all issuer from the database
-        List<Issuer> listIssuer = issuerRepository.findAll();
+    public String viewVendors(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        int pageSize = 10; // Define the size of the page
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        Page<Issuer> issuerPage = issuerService.findIssuers(pageRequest);
 
-        /// Add the list of issuer to the model
-        model.addAttribute("listIssuer", listIssuer);
-        
-        // Return the view to display the list of issuer
+        model.addAttribute("listIssuer", issuerPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", issuerPage.getTotalPages());
         return "view_issuer";
     }
 

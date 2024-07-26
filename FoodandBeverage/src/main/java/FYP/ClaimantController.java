@@ -1,31 +1,35 @@
 package FYP;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 @Controller
 public class ClaimantController {
 
     @Autowired
     private ClaimantRepository claimantRepository;
-
+    
+    @Autowired
+    private ClaimantService claimantService;
+    
     @GetMapping("/claimants")
-    public String viewClaimants(Model model) {
-        // Retrieve all claimants from the database
-        List<Claimant> listClaimants = claimantRepository.findAll();
+    public String viewVendors(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        int pageSize = 10; // Define the size of the page
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        Page<Claimant> claimantPage = claimantService.findClaimants(pageRequest);
 
-        // Add the list of claimants to the model
-        model.addAttribute("listClaimants", listClaimants);
-        
-        // Return the view to display the list of claimants
+        model.addAttribute("listClaimants", claimantPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", claimantPage.getTotalPages());
         return "view_claimants";
     }
 
