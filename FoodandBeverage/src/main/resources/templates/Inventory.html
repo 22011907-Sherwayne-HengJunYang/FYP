@@ -31,9 +31,19 @@
             <div class="row m-3">
                 <div class="col text-center fs-3">Inventory</div>
             </div>
+            
+            <!-- Search Bar -->
+            <form th:action="@{/Inventory}" method="get" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Search by Vendor Name" th:value="${searchQuery}" />
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </form>
+            
             <!-- Feedback messages -->
             <div th:if="${inventoryError}" class="alert alert-danger" th:text="${inventoryError}"></div>
             <div th:if="${orderSuccess}" class="alert alert-success" th:text="${orderSuccess}"></div>
+            
             <div class="row m-3 border-top border-bottom fs-5">
                 <div class="col">Coupon ID</div>
                 <div class="col">Expiry Date</div>
@@ -50,17 +60,18 @@
                 <div class="col" th:text="${orderCoupon.status ? 'Available' : 'Redeemed'}"></div>
                 <div class="col" th:text="${orderCoupon.redeemCode}"></div>
             </div>
+            
             <!-- Pagination Controls -->
             <div class="pagination-controls">
                 <!-- Previous Button -->
-                <a th:href="@{/Inventory(page=${page.number - 1}, size=${page.size})}" class="btn btn-secondary" th:if="${page.hasPrevious()}">Previous</a>
+                <a th:href="@{/Inventory(page=${page.number - 1}, size=${page.size}, search=${searchQuery})}" class="btn btn-secondary" th:if="${page.hasPrevious()}">Previous</a>
                 <!-- Next Button -->
-                <a th:href="@{/Inventory(page=${page.number + 1}, size=${page.size})}" class="btn btn-secondary" th:if="${page.hasNext()}">Next</a>
+                <a th:href="@{/Inventory(page=${page.number + 1}, size=${page.size}, search=${searchQuery})}" class="btn btn-secondary" th:if="${page.hasNext()}">Next</a>
             </div>
             <!-- Pagination Links -->
             <div class="pagination-links">
                 <a th:each="i : ${#numbers.sequence(1, totalPages)}" 
-                   th:href="@{/Inventory(page=${i - 1}, size=${page.size})}" 
+                   th:href="@{/Inventory(page=${i - 1}, size=${page.size}, search=${searchQuery})}" 
                    th:text="${i}" 
                    th:classappend="${i == page.number + 1} ? 'btn btn-primary' : 'btn btn-outline-primary'"></a>
             </div>

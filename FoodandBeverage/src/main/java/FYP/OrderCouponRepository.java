@@ -14,5 +14,8 @@ public interface OrderCouponRepository extends JpaRepository<OrderCoupon, Intege
 	boolean existsByClaimant_IdAndCoupon_Id(int claimantId, int couponId);
 
 	OrderCoupon findByRedeemCode(String redeemCode);
+	
+	Page<OrderCoupon> findByCouponVendorNameContainingIgnoreCaseAndClaimantId(String vendorName, int claimantId, Pageable pageable);
+	
 }
 

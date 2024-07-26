@@ -155,17 +155,27 @@ public class CartCouponController {
     public String viewInventory(
             @RequestParam(defaultValue = "0") int page, 
             @RequestParam(defaultValue = "10") int size, 
-            
+            @RequestParam(required = false) String search, // Search parameter for vendor name
             Model model) {
+        
 
     	ClaimantDetails loggedInClaimant = (ClaimantDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         
         Page<OrderCoupon> orderCoupons = orderCouponService.findPaginatedByClaimant_Id(loggedInClaimant.getClaimant().getId(), page, size);
-
+        if (search == null || search.trim().isEmpty()) {
+            // No search query, show default output
+            orderCoupons = orderCouponService.findPaginatedByClaimant_Id(loggedInClaimant.getClaimant().getId(), page, size); // Pass empty string to show all
+        } else {
+            // Perform search
+            orderCoupons = orderCouponService.findPaginatedByVendorName(loggedInClaimant.getClaimant().getId(),search, page, size);
+        }
+        
         model.addAttribute("listOrders", orderCoupons.getContent());
         model.addAttribute("page", orderCoupons);
         model.addAttribute("totalPages", orderCoupons.getTotalPages());
         model.addAttribute("currentPage", page);
+        model.addAttribute("searchQuery", search); // Add search query to model
+
 
         return "Inventory";
     }

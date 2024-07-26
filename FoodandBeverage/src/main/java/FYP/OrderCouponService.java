@@ -18,4 +18,9 @@ public class OrderCouponService {
         Pageable pageable = PageRequest.of(page, size);
         return orderCouponRepository.findByClaimantId(claimantId, pageable);
     }
+    
+    public Page<OrderCoupon> findPaginatedByVendorName(int claimantId, String vendorName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return orderCouponRepository.findByCouponVendorNameContainingIgnoreCaseAndClaimantId(vendorName, claimantId, pageable);
+    }
 }
