@@ -5,6 +5,16 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Couponify - Watch List</title>
 	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+	<style>
+		body {
+        background-color: #d2b48c !important; /* Darker beige */
+        background-size: cover;
+        background-position: center center;
+        background-repeat: repeat-y; /* Repeat vertically */
+        background-attachment: fixed; /* Fixed background */
+        background-blend-mode: multiply; /* Blend the background image with the color */
+      }
+	</style>
 </head>
 
 <body>
@@ -14,15 +24,14 @@
 		<br>
 		<br>
 		<main>
-			<div class="container ">
+			<div class="container">
 				<div class="row fs-1 text-center">
-					<p>	Watch List</p>
-
+					<p>Watch List</p>
 				</div>
 				<div class="row mb-5">
 					<!-- shopping cart -->
 					<div class="col-8">
-						<div class="container ">
+						<div class="container">
 							<!-- shopping cart coupons header -->
 							<div class="row m-3 border-top border-bottom fs-5">
 								<div class="col">Coupon ID</div>
@@ -38,17 +47,14 @@
 								<div class="col mb-3">
 									<h6 th:text="${cartCoupon.coupon.description}"></h6>
 								</div>
-								
 								<div class="col align-self-center">
 									<!-- Update coupon quantity in cart form -->
-						
 									<form th:action="@{/cart/process_order}" method="post" id="paypalForm">
-										<input type="hidden" name="claimantId" id ="claimantId" th:value="${claimantId}"> 
-										<input type="hidden" name="orderId" id="orderId"> 
+										<input type="hidden" name="claimantId" id="claimantId" th:value="${claimantId}">
+										<input type="hidden" name="orderId" id="orderId">
 										<input type="hidden" name="transactionId" id="transactionId">
 										<button class="btn btn-primary">Confirm</button>
 									</form>
-
 									<br>
 									<!-- Remove coupon from cart link -->
 									<form th:action="@{/cart/remove/{id}(id=${cartCoupon.id})}" method="post">

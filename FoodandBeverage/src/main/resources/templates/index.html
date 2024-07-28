@@ -10,7 +10,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
-      background-image: url("/images/hero_1.jpg");
+      background-color: #d2b48c !important; /* Darker beige */
       margin-top: 100px; /* Adjust as necessary to avoid overlap with the header */
     }
 
@@ -26,33 +26,55 @@
     }
 
     .announcement-content {
-		display: flex;
-		     align-items: center;
-		     justify-content: space-between;
-		     position: relative;
-		     overflow: hidden;
-		     white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
-	.announcement-text {
-	    will-change: transform;
-	    animation: slideLeft 15s linear infinite;
-	    display: inline-block;
-	    padding-left: 100%;
-	    white-space: nowrap;
-	}
+    .announcement-text {
+      will-change: transform;
+      animation: slideLeft 15s linear infinite;
+      display: inline-block;
+      padding-left: 100%;
+      white-space: nowrap;
+    }
 
-	@keyframes slideLeft {
-	    0% {
-	        transform: translateX(0);
-	    }
-	    100% {
-	        transform: translateX(-100%);
-	    }
-	}
+    @keyframes slideLeft {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
 
     .edit-announcement {
       margin-left: 20px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .greeting-text {
+      font-family: 'Arial', sans-serif;
+      font-size: 24px;
+      color: #2c3e50;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -60,24 +82,24 @@
 <body>
   <div th:replace="fragment/header"></div>
   <br>
-  
+
   <div class="container">
     <div class="py-5 text-center">
       <div class="h1">Welcome to Couponify!</div>
-	  <!-- Announcement Bar -->
-	    <div class="container">
-	      <div class="announcement-bar">
-	        <div class="announcement-content">
-	          <div class="announcement-text" th:text="${announcementText}">Announcement text goes here.</div>
-	          <div sec:authorize="hasRole('Admin') or hasRole('Vendor')" class="edit-announcement">
-	            <a href="/announcement/edit" class="btn btn-primary">Edit Announcement</a>
-	          </div>
-	        </div>
-	      </div>
-	    </div>
+      <!-- Announcement Bar -->
+      <div class="container">
+        <div class="announcement-bar">
+          <div class="announcement-content">
+            <div class="announcement-text" th:text="${announcementText}">Announcement text goes here.</div>
+            <div sec:authorize="hasRole('Admin') or hasRole('Vendor')" class="edit-announcement">
+              <a href="/announcement/edit" class="btn btn-primary">Edit Announcement</a>
+            </div>
+          </div>
+        </div>
+      </div>
       <main>
         <div sec:authorize="isAuthenticated()">
-          <h4 class="text-center">Hello <span sec:authentication="principal.username"></span>!</h4>
+          <h4 class="text-center fade-in greeting-text">Hello <span sec:authentication="principal.username"></span>!</h4>
         </div>
         <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
           <div class="carousel-indicators">
@@ -94,7 +116,7 @@
               <img src="/images/Banner3.png" class="d-block w-100" alt="...">
               <div class="carousel-caption d-none d-md-block"></div>
             </div>
-			<div class="carousel-item" data-bs-interval="5000">
+            <div class="carousel-item" data-bs-interval="5000">
               <img src="/images/Banner1.png" class="d-block w-100" alt="...">
               <div class="carousel-caption d-none d-md-block"></div>
             </div>

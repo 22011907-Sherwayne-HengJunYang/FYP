@@ -4,12 +4,17 @@
 <head>
     <title>Public Coupons</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #d2b48c !important; /* Darker beige */
+            background-size: cover;
+            background-position: center center;
+            background-repeat: repeat-y;
+            background-attachment: fixed;
+        }
+    </style>
 </head>
-<style>
-  body {
-    background-image: url("/images/hero_1.jpg");
-  }
-</style>
+
 <body>
     <div th:replace="fragment/header"></div>
     <br>
@@ -81,4 +86,5 @@
 
     <div th:replace="fragment/footer"></div>
 </body>
+
 </html>
