@@ -34,6 +34,9 @@ public class CartCouponController {
     @Autowired
     private OrderCouponRepository orderRepo;
     
+    @Autowired
+    private IssuerRepository issuerRepo;
+    
     private String generateRedeemCode() {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[9]; // 9 bytes to ensure the encoded string is approximately 12 characters long
