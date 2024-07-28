@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import jakarta.validation.Valid;
 
@@ -32,6 +33,7 @@ public class CouponController {
     
     @Autowired
     private VendorRepository vendorRepository;
+    
 
     // View all coupons
     @GetMapping("/coupons")
@@ -131,17 +133,25 @@ public class CouponController {
     @PostMapping("/makePublic")
     public String makeCouponPublic(@RequestParam("id") int id, @RequestParam("quantity") int quantity, RedirectAttributes redirectAttributes) {
         Coupon coupon = couponRepository.findById(id).orElse(null);
+        
+        Object loggedInUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (coupon != null && quantity > 0) {
-            if (coupon.getQuantity() >= quantity) {
-                coupon.setPublicCoupon(true);
-                coupon.setQuantity(coupon.getQuantity() - quantity);
-                coupon.setPublicQuantity(coupon.getPublicQuantity() + quantity);
+        if (loggedInUser instanceof IssuerDetails) {
+            IssuerDetails loggedInIssuer = (IssuerDetails) loggedInUser;
+            Issuer issuer = loggedInIssuer.getIssuer();
+            
+            if (coupon != null && quantity > 0) {
+                if (coupon.getQuantity() >= quantity) {
+                    coupon.setIssuer(issuer); // Corrected this line to set the actual Issuer object
+                    coupon.setPublicCoupon(true);
+                    coupon.setQuantity(coupon.getQuantity() - quantity);
+                    coupon.setPublicQuantity(coupon.getPublicQuantity() + quantity);
 
-                couponRepository.save(coupon);
-                return "redirect:/publicCoupons";
-            } else {
-                redirectAttributes.addFlashAttribute("errorMessage", "Insufficient quantity of coupons.");
+                    couponRepository.save(coupon);
+                    return "redirect:/publicCoupons";
+                } else {
+                    redirectAttributes.addFlashAttribute("errorMessage", "Insufficient quantity of coupons.");
+                }
             }
         }
         return "redirect:/coupons"; // Redirect to the coupon list page

@@ -35,6 +35,10 @@
 	    @JoinColumn(name = "vendor_id", nullable = false)
 	    private Vendor vendor;
 	    
+	    @ManyToOne
+	    @JoinColumn(name = "issuer_id")
+	    private Issuer issuer;
+	    
 	    @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL, orphanRemoval = true)
 	    private List<OrderCoupon> orderCoupons;
 	
@@ -54,6 +58,14 @@
 	    }
 	
 	    // Getters and setters
+	    public Issuer getIssuer() {
+	    	return issuer;
+	    }
+	    
+	    public void setIssuer(Issuer issuer) {
+	    	this.issuer = issuer;
+	    }
+	    
 	    public Vendor getVendor() {
 	        return vendor;
 	    }

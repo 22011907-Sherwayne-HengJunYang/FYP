@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.Objects;
 
 @Entity
 public class Issuer {
@@ -68,20 +67,4 @@ public class Issuer {
         this.role = role;
     }
 
-    // Add getters and setters for other fields
-
-    // Override equals and hashCode methods for consistency
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Issuer)) return false;
-        Issuer issuer = (Issuer) o;
-        return Objects.equals(issuerID, issuer.issuerID);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(issuerID);
-    }
 }
