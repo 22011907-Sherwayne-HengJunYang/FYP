@@ -3,20 +3,23 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Couponify - Add New Claimant!</title>
-    
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
         body {
-        background-color: #d2b48c !important; /* Darker beige */
-        background-size: cover;
-        background-position: center center;
-        background-repeat: repeat-y; /* Repeat vertically */
-        background-attachment: fixed; /* Fixed background */
-        background-blend-mode: multiply; /* Blend the background image with the color */
-      }
+            background-color: #d2b48c !important; /* Darker beige */
+            background-size: cover;
+            background-position: center center;
+            background-repeat: repeat-y; /* Repeat vertically */
+            background-attachment: fixed; /* Fixed background */
+            background-blend-mode: multiply; /* Blend the background image with the color */
+        }
+        .content-container {
+            margin-top: 70px;
+        }
     </style>
 </head>
 <body>
@@ -50,6 +53,10 @@
                     <label for="claimant_password">Password:</label>
                     <input id="claimant_password" type="password" class="form-control" th:field="*{password}" required pattern="^(?=.*[A-Z])(?=.*\d).+$" />
                     <div class="invalid-feedback">Password must contain at least 1 uppercase letter and 1 number.</div>
+                </div>
+            </div>
+            <div class="form-row justify-content-center">
+                <div class="form-group col-md-6">
                     <button type="submit" class="btn btn-primary save-button">Save</button>
                 </div>
             </div>
@@ -77,10 +84,10 @@
             var usernameField = document.getElementById('claimant_username');
             var emailField = document.getElementById('claimant_email');
             var passwordField = document.getElementById('claimant_password');
-            
+
             var namePattern = /^[A-Za-z\s]+$/;
             var passwordPattern = /^(?=.*[A-Z])(?=.*\d).+$/;
-            
+
             var valid = true;
 
             if (!namePattern.test(nameField.value)) {
