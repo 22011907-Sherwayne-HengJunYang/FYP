@@ -7,13 +7,13 @@
     <script src="/bootstrap/js/bootstrap.min.js"></script>
     <style>
         body {
-        background-color: #d2b48c !important; /* Darker beige */
-        background-size: cover;
-        background-position: center center;
-        background-repeat: repeat-y; /* Repeat vertically */
-        background-attachment: fixed; /* Fixed background */
-        background-blend-mode: multiply; /* Blend the background image with the color */
-      }
+            background-color: #d2b48c !important; /* Darker beige */
+            background-size: cover;
+            background-position: center center;
+            background-repeat: repeat-y; /* Repeat vertically */
+            background-attachment: fixed; /* Fixed background */
+            background-blend-mode: multiply; /* Blend the background image with the color */
+        }
     </style>
 </head>
 
@@ -26,22 +26,8 @@
         <h1>Add Coupon</h1>
 
         <form th:action="@{/coupons/save}" method="post" th:object="${coupon}">
-            <!-- Vendor Dropdown -->
-            <div class="form-group">
-                <label for="vendor">Vendor</label>
-                <select class="form-control" id="vendor" name="vendor" th:field="*{vendor}" required>
-                    <option th:each="vendor : ${venList}" th:value="${vendor.vendorID}" th:text="${vendor.name}"></option>
-                </select>
-            </div>
-            
-            <!-- Status Field -->
-            <div class="form-group">
-                <label for="status">Status</label>
-                <select class="form-control" id="status" name="status" th:field="*{status}">
-                    <option th:value="true" th:text="Available"></option>
-                    <option th:value="false" th:text="Redeemed"></option>
-                </select>
-            </div>
+            <!-- Vendor ID (Hidden Field) -->
+            <input type="hidden" th:field="*{vendor}" th:value="${loggedInVendorID}" />
             
             <!-- Quantity Field -->
             <div class="form-group">

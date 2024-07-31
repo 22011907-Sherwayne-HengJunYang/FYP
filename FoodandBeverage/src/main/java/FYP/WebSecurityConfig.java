@@ -87,7 +87,7 @@ public class WebSecurityConfig {
 				.formLogin((login) -> login.loginPage("/login").permitAll().defaultSuccessUrl("/")) // Goes to homepage
 																									// upon login
 				.logout((logout) -> logout.logoutSuccessUrl("/"))// Goes to homepage upon logout
-				.exceptionHandling((exceptionHandling) -> exceptionHandling.accessDeniedPage("/403"));
+				.exceptionHandling((exceptionHandling) -> exceptionHandling.accessDeniedPage("/error/403"));
 
 		return http.build();
 	}

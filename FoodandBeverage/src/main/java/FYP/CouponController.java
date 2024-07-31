@@ -1,5 +1,6 @@
 package FYP;
 
+import java.nio.file.AccessDeniedException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,6 +8,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,9 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import jakarta.validation.Valid;
 
@@ -54,10 +55,13 @@ public class CouponController {
     public String addCoupon(Model model) {
         model.addAttribute("coupon", new Coupon());
 
-        // You can also add other model attributes if needed
-        List<Vendor> venList = vendorRepository.findAll();
-        model.addAttribute("venList", venList);
-        
+        // Get the logged-in vendor's details
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof VendorDetails) {
+            VendorDetails loggedInVendor = (VendorDetails) principal;
+            model.addAttribute("loggedInVendor", loggedInVendor.getVendor());
+        }
+
         return "add_coupon";
     }
 
@@ -66,17 +70,32 @@ public class CouponController {
     public String saveCoupons(@Valid Coupon coupon, BindingResult result, Model model) {
         if (result.hasErrors()) {
             // Handle validation errors
-            List<Vendor> venList = vendorRepository.findAll();
-            model.addAttribute("venList", venList);
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof VendorDetails) {
+                VendorDetails vendorDetails = (VendorDetails) principal;
+                model.addAttribute("loggedInVendorID", vendorDetails.getVendor().getVendorID());
+            }
             return "add_coupon";
         }
+
         // Set the issueDate and expiryDate before saving
         coupon.setIssueDate(new Date()); // Set the issue date to the current date
         coupon.setExpiryDate(calculateExpiryDate(coupon.getIssueDate()));
         
+        // Set the vendor ID to the logged-in vendor
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof VendorDetails) {
+            VendorDetails vendorDetails = (VendorDetails) principal;
+            coupon.setVendor(vendorDetails.getVendor()); // Set vendor from VendorDetails
+        } else {
+            // Handle the case where principal is not of the expected type
+            throw new IllegalStateException("Expected VendorDetails but got " + principal.getClass().getName());
+        }
+
         couponRepository.save(coupon);
         return "redirect:/coupons";
     }
+    
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -86,32 +105,56 @@ public class CouponController {
 
     // Edit a coupon (form page)
     @GetMapping("/coupons/edit/{id}")
-    public String editCoupon(@PathVariable("id") Integer id, Model model) {
-        Coupon coupon = couponRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid coupon Id:" + id));
+    public String editCoupon(@PathVariable("id") Integer id, Model model) throws AccessDeniedException {
+        Coupon coupon = couponRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid coupon Id:" + id));
+
+        // Get the logged-in vendor's ID
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof VendorDetails) {
+            Vendor loggedInVendor = ((VendorDetails) principal).getVendor();
+            // Check if the logged-in vendor is allowed to edit this coupon
+            if (!coupon.getVendor().getVendorID().equals(loggedInVendor.getVendorID())) {
+                throw new AccessDeniedException("You are not authorized to edit this coupon.");
+            }
+        }
+
         List<Vendor> venList = vendorRepository.findAll();
         model.addAttribute("venList", venList);
         model.addAttribute("coupon", coupon);
         return "edit_coupon";
     }
 
+
     // Save the edited coupon
     @PostMapping("/coupons/edit/{id}")
-    public String saveUpdatedCoupon(@PathVariable("id") Integer id, @Valid Coupon coupon, BindingResult result, Model model) {
+    public String saveUpdatedCoupon(@PathVariable("id") Integer id, @Valid Coupon coupon, BindingResult result, Model model) throws AccessDeniedException {
         if (result.hasErrors()) {
-            // Handle validation errors
             List<Vendor> venList = vendorRepository.findAll();
             model.addAttribute("venList", venList);
             model.addAttribute("coupon", coupon);
             return "edit_coupon";
         }
 
-        Coupon existingCoupon = couponRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid coupon Id:" + id));
+        Coupon existingCoupon = couponRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid coupon Id:" + id));
+
+        // Get the logged-in vendor's ID
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof VendorDetails) {
+            Vendor loggedInVendor = ((VendorDetails) principal).getVendor();
+            // Check if the logged-in vendor is allowed to edit this coupon
+            if (!existingCoupon.getVendor().getVendorID().equals(loggedInVendor.getVendorID())) {
+                throw new AccessDeniedException("You are not authorized to edit this coupon.");
+            }
+        }
+
         existingCoupon.setVendor(coupon.getVendor());
         existingCoupon.setQuantity(coupon.getQuantity());
         existingCoupon.setExpiryDate(coupon.getExpiryDate());
         existingCoupon.setPublicCoupon(coupon.isPublicCoupon());
         existingCoupon.setPublicQuantity(coupon.getPublicQuantity());
-        
+
         couponRepository.save(existingCoupon);
         return "redirect:/coupons";
     }
@@ -125,7 +168,20 @@ public class CouponController {
     }
 
     @GetMapping("/coupons/delete/{id}")
-    public String deleteCoupon(@PathVariable("id") Integer id) {
+    public String deleteCoupon(@PathVariable("id") Integer id) throws AccessDeniedException {
+        Coupon coupon = couponRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid coupon Id:" + id));
+
+        // Get the logged-in vendor's ID
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof VendorDetails) {
+            Vendor loggedInVendor = ((VendorDetails) principal).getVendor();
+            // Check if the logged-in vendor is allowed to delete this coupon
+            if (!coupon.getVendor().getVendorID().equals(loggedInVendor.getVendorID())) {
+                throw new AccessDeniedException("You are not authorized to delete this coupon.");
+            }
+        }
+
         couponRepository.deleteById(id);
         return "redirect:/coupons";
     }
