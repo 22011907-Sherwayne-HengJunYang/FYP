@@ -17,28 +17,13 @@
         .coupon-card {
             margin-bottom: 20px;
         }
-
-        .content {
-            min-height: calc(100vh - 150px);
-            padding-bottom: 20px;
-        }
-
-        .footer {
-            height: 50px;
-        }
-
-        .card-img-top {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
     </style>
 </head>
 
 <body>
     <div th:replace="fragment/header"></div>
     <br>
-    <div class="container content">
+    <div class="container">
         <div class="py-5 text-center">
             <h2>View Public Coupons</h2>
         </div>
@@ -52,26 +37,23 @@
         <div class="row">
             <div class="col-md-4 coupon-card" th:each="coupon : ${publicCoupons}" th:if="${coupon.publicQuantity > 0}">
                 <div class="card">
-                    <img th:src="${coupon.img}" class="card-img-top" alt="Coupon Image">
+                    <img src="https://i.imgur.com/CtL3oQp.jpg" class="card-img-top" alt="Coupon Image">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${coupon.vendor.name}">Vendor Name</h5>
                         <p class="card-text" th:text="${coupon.description}">Coupon Description</p>
-                        <p class="card-text"><strong>Expires:</strong> <span
-                                th:text="${#dates.format(coupon.expiryDate, 'MMMM dd, yyyy')}">Expiration Date</span>
-                        </p>
-                        <button type="button" class="btn btn-info" data-toggle="modal"
-                            th:data-target="'#couponModal' + ${coupon.id}">Details</button>
-                        <form id="collect-form" th:action="@{/cart/add/{couponId}(couponId=${coupon.id})}" method="post"
-                            class="mt-2">
-                            <input type="hidden" name="quantity" value="1">
-                            <button type="submit" class="btn btn-primary">Collect</button>
-                        </form>
+                        <p class="card-text"><strong>Expires:</strong> <span th:text="${#dates.format(coupon.expiryDate, 'MMMM dd, yyyy')}">Expiration Date</span></p>
+                        <button type="button" class="btn btn-info" data-toggle="modal" th:data-target="'#couponModal' + ${coupon.id}">Details</button>
+                        <div th:if="${#authorization.expression('hasRole(''ROLE_Claimant'')')}">
+                            <form id="collect-form" th:action="@{/cart/add/{couponId}(couponId=${coupon.id})}" method="post" class="mt-2">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn btn-primary">Collect</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Coupon Details Modal -->
-                <div class="modal fade" th:id="'couponModal' + ${coupon.id}" tabindex="-1" role="dialog"
-                    aria-labelledby="couponModalLabel" aria-hidden="true">
+                <div class="modal fade" th:id="'couponModal' + ${coupon.id}" tabindex="-1" role="dialog" aria-labelledby="couponModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -82,21 +64,17 @@
                             </div>
                             <div class="modal-body">
                                 <p th:text="${coupon.description}"></p>
-                                <p><strong>Expires on:</strong> <span
-                                        th:text="${#dates.format(coupon.expiryDate, 'MMMM dd, yyyy')}"></span></p>
-                                <p><strong>Public Quantity:</strong> <span th:text="${coupon.publicQuantity}"></span>
-									<div sec:authorize="hasAnyRole('Issuer','Vendor','Admin')">
-									<p><strong>Public By</strong> <span th:text="${coupon.issuerName}"></span></p><p><strong>Issuer ID:</strong> <span th:text="${coupon.issuerId}"></span></p>
-									</div>
-                                </p>
+                                <p><strong>Expires on:</strong> <span th:text="${#dates.format(coupon.expiryDate, 'MMMM dd, yyyy')}"></span></p>
+                                <p><strong>Public Quantity:</strong> <span th:text="${coupon.publicQuantity}"></span></p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <form id="collect-form-modal" th:action="@{/cart/add/{couponId}(couponId=${coupon.id})}"
-                                    method="post">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button type="submit" class="btn btn-primary">Collect</button>
-                                </form>
+                                <div th:if="${#authorization.expression('hasRole(''ROLE_Claimant'')')}">
+                                    <form id="collect-form-modal" th:action="@{/cart/add/{couponId}(couponId=${coupon.id})}" method="post">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn btn-primary">Collect</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -113,8 +91,7 @@
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
-                    th:classappend="${i == currentPage} ? 'active'">
+                <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == currentPage} ? 'active'">
                     <a class="page-link" th:href="@{/publicCoupons(page=${i})}" th:text="${i}">1</a>
                 </li>
                 <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
@@ -126,7 +103,7 @@
         </nav>
     </div>
 
-    <div class="footer" th:replace="fragment/footer"></div>
+    <div th:replace="fragment/footer"></div>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
