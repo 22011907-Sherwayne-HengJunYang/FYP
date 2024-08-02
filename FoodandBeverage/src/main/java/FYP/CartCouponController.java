@@ -187,17 +187,26 @@ public class CartCouponController {
         OrderCoupon orderCoupon = orderRepo.findByRedeemCode(redeemCode);
         
         if (orderCoupon != null) {
-            if (!orderCoupon.isStatus()) { // Check if the coupon is already redeemed
-                model.addAttribute("message", "Coupon has already been redeemed!");
+            // Get currently logged in user
+            VendorDetails loggedInVendor = (VendorDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            int loggedInVendorId = loggedInVendor.getVendor().getVendorID();
+            
+            // Check if the logged-in vendor is the creator of the coupon
+            if (orderCoupon.getCoupon().getVendor().getVendorID() == loggedInVendorId) {
+                if (!orderCoupon.isStatus()) { // Check if the coupon is already redeemed
+                    model.addAttribute("message", "Coupon has already been redeemed!");
+                } else {
+                    Coupon coupon = orderCoupon.getCoupon();
+                    coupon.setQuantityRedeemed(coupon.getQuantityRedeemed() + 1); // Increment the redeemed quantity
+                    couponRepo.save(coupon); // Save the updated coupon
+
+                    orderCoupon.setStatus(false); // Set status to invalid (redeemed)
+                    orderRepo.save(orderCoupon); // Save the updated order coupon
+
+                    model.addAttribute("message", "Coupon redeemed successfully!");
+                }
             } else {
-                Coupon coupon = orderCoupon.getCoupon();
-                coupon.setQuantityRedeemed(coupon.getQuantityRedeemed() + 1); // Increment the redeemed quantity
-                couponRepo.save(coupon); // Save the updated coupon
-                
-                orderCoupon.setStatus(false); // Set status to invalid (redeemed)
-                orderRepo.save(orderCoupon); // Save the updated order coupon
-                
-                model.addAttribute("message", "Coupon redeemed successfully!");
+                model.addAttribute("message", "You are not authorized to redeem this coupon!");
             }
         } else {
             model.addAttribute("message", "Invalid redeem code!");

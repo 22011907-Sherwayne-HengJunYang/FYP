@@ -26,18 +26,9 @@
 	    private int quantityClaimed;
 	    private int quantityRedeemed;
 	    private float itemCost; // cost per product for coupon
-	    private String title;
 	    private String img;
 	    
-	    
-	    
-	    public String getTitle() {
-			return title;
-		}
-
-		public void setTitle(String title) {
-			this.title = title;
-		}
+	   
 
 		public String getImg() {
 			return img;
@@ -78,6 +69,12 @@
 	    }
 	
 	    // Getters and setters
+	    public Integer getIssuerId() {
+	        return issuer != null ? issuer.getIssuerID() : null;
+	    }
+	    public String getIssuerName() {
+	        return issuer != null ? issuer.getName() : "Unknown";
+	    }
 	    public Issuer getIssuer() {
 	    	return issuer;
 	    }

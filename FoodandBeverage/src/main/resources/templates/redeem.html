@@ -19,14 +19,14 @@
 </style>
 <body>
     <div class="container">
-		<div th:replace="fragment/header"></div>
-			<br>
-			<br>
-			<br>
+        <div th:replace="fragment/header"></div>
+        <br>
+        <br>
+        <br>
         <h1>Redeem Coupon</h1>
 
         <!-- Display message if available -->
-        <div th:if="${message}" th:text="${message}" class="alert alert-info"></div>
+        <div th:if="${message}" th:classappend="${message == 'Coupon redeemed successfully!' ? 'alert alert-info' : 'alert alert-danger'}" th:text="${message}"></div>
 
         <form th:action="@{/redeemCode}" method="post">
             <!-- Redeem Code Field -->

@@ -2,51 +2,63 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Add Coupon!</title>
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
-    <style>
-        body {
-            background-color: #d2b48c !important; /* Darker beige */
-            background-size: cover;
-            background-position: center center;
-            background-repeat: repeat-y; /* Repeat vertically */
-            background-attachment: fixed; /* Fixed background */
-            background-blend-mode: multiply; /* Blend the background image with the color */
-        }
-    </style>
+	<title>Add Coupon!</title>
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+	<script src="/bootstrap/js/bootstrap.min.js"></script>
+	<style>
+		body {
+			background-color: #d2b48c !important;
+			/* Darker beige */
+			background-size: cover;
+			background-position: center center;
+			background-repeat: repeat-y;
+			/* Repeat vertically */
+			background-attachment: fixed;
+			/* Fixed background */
+			background-blend-mode: multiply;
+			/* Blend the background image with the color */
+		}
+	</style>
 </head>
 
 <body>
-    <div class="container">
-        <div th:replace="fragment/header"></div>
-        <br>
-        <br>
-        <br>
-        <h1>Add Coupon</h1>
+	<div class="container">
+		<div th:replace="fragment/header"></div>
+		<br>
+		<br>
+		<br>
+		<h1>Add Coupon</h1>
 
-        <form th:action="@{/coupons/save}" method="post" th:object="${coupon}">
-            <!-- Vendor ID (Hidden Field) -->
-            <input type="hidden" th:field="*{vendor}" th:value="${loggedInVendorID}" />
-            
-            <!-- Quantity Field -->
-            <div class="form-group">
-                <label for="quantity">Quantity</label>
-                <input type="number" class="form-control" id="quantity" name="quantity" th:field="*{quantity}" required>
-            </div>
+		<form th:action="@{/coupons/save}" method="post" th:object="${coupon}">
+			<!-- Vendor ID (Hidden Field) -->
+			<input type="hidden" th:field="*{vendor}" th:value="${loggedInVendorID}" />
 
-            <!-- Description Field -->
-            <div class="form-group">
-                <label for="description">Descriptions</label>
-                <textarea class="form-control" id="description" name="description" th:field="*{description}" rows="3" minlength="10" required></textarea>
-                <div class="invalid-feedback">Description must be at least 10 characters long.</div>
-            </div>
+			<!-- Title Field -->
+			<div class="form-group">
+				<label for="description">Image Link!</label>
+				<textarea class="form-control" id="title" name="img" th:field="*{img}" rows="1"
+					minlength="10" required></textarea>
+				<div class="invalid-feedback">Description must be at least 7 characters long.</div>
+			</div>
+			<!-- Quantity Field -->
+			<div class="form-group">
+				<label for="quantity">Quantity</label>
+				<input type="number" class="form-control" id="quantity" name="quantity" th:field="*{quantity}" required>
+			</div>
 
-            <!-- Submit and Cancel Buttons -->
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a href="/coupons" class="btn btn-secondary">Cancel</a>
-        </form>
-    </div>
+			<!-- Description Field -->
+			<div class="form-group">
+				<label for="description">Descriptions</label>
+				<textarea class="form-control" id="description" name="description" th:field="*{description}" rows="3"
+					minlength="10" required></textarea>
+				<div class="invalid-feedback">Description must be at least 10 characters long.</div>
+			</div>
+
+			<!-- Submit and Cancel Buttons -->
+			<button type="submit" class="btn btn-primary">Save</button>
+			<a href="/coupons" class="btn btn-secondary">Cancel</a>
+		</form>
+	</div>
 </body>
 
 </html>
