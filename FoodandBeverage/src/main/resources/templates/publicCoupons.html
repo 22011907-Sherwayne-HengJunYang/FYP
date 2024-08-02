@@ -2,89 +2,118 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Public Coupons</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #d2b48c !important; /* Darker beige */
-            background-size: cover;
-            background-position: center center;
-            background-repeat: repeat-y;
-            background-attachment: fixed;
-        }
-    </style>
+	<title>Public Coupons</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<style>
+		body {
+			background-color: #d2b48c !important;
+			/* Darker beige */
+			background-size: cover;
+			background-position: center center;
+			background-repeat: repeat-y;
+			background-attachment: fixed;
+		}
+
+		.coupon-card {
+			margin-bottom: 20px;
+		}
+	</style>
 </head>
 
 <body>
-    <div th:replace="fragment/header"></div>
-    <br>
-    <div class="container">
-        <div class="py-5 text-center">
-            <h2>View Public Coupons</h2>
-        </div>
+	<div th:replace="fragment/header"></div>
+	<br>
+	<div class="container">
+		<div class="py-5 text-center">
+			<h2>View Public Coupons</h2>
+		</div>
 
-        <!-- Feedback messages -->
-        <div class="alert alert-success" th:if="${addSuccess}" role="alert">
-            Coupon added to cart successfully!
-        </div>
-        <div class="alert alert-danger" th:if="${addError}" role="alert" th:text="${addError}"></div>
+		<!-- Feedback messages -->
+		<div class="alert alert-success" th:if="${addSuccess}" role="alert">
+			Coupon added to cart successfully!
+		</div>
+		<div class="alert alert-danger" th:if="${addError}" role="alert" th:text="${addError}"></div>
 
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Coupon ID</th>
-                        <th>Vendor Name</th>
-                        <th>Availability</th>
-                        <th>Issue Date</th>
-                        <th>Expiry Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Loop through each public coupon in the list and only show if publicQuantity > 0 -->
-                    <th:block th:each="coupon : ${publicCoupons}">
-                        <th:block th:if="${coupon.publicQuantity > 0}">
-                            <tr>
-                                <td th:text="${coupon.id}"></td>
-                                <td th:text="${coupon.vendor.name}"></td>
-                                <td th:text="${coupon.publicQuantity}"></td>
-                                <td th:text="${#dates.format(coupon.issueDate, 'yyyy-MM-dd')}"></td>
-                                <td th:text="${#dates.format(coupon.expiryDate, 'yyyy-MM-dd')}"></td>
-                                <td>
-                                    <form id="collect-form" th:action="@{/cart/add/{couponId}(couponId=${coupon.id})}" method="post">
-                                        <input type="hidden" name="quantity" value="1">
-                                        <button type="submit" class="btn btn-primary">Collect</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        </th:block>
-                    </th:block>
-                </tbody>
-            </table>
-        </div>
+		<div class="row">
+			<div class="col-md-4 coupon-card" th:each="coupon : ${publicCoupons}" th:if="${coupon.publicQuantity > 0}">
+				<div class="card">
+					<img src="https://i.imgur.com/CtL3oQp.jpg" class="card-img-top" alt="Coupon Image">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${coupon.vendor.name}">Vendor Name</h5>
+						<p class="card-text" th:text="${coupon.description}">Coupon Description</p>
+						<p class="card-text"><strong>Expires:</strong> <span
+								th:text="${#dates.format(coupon.expiryDate, 'MMMM dd, yyyy')}">Expiration Date</span>
+						</p>
+						<button type="button" class="btn btn-info" data-toggle="modal"
+							th:data-target="'#couponModal' + ${coupon.id}">Details</button>
+						<form id="collect-form" th:action="@{/cart/add/{couponId}(couponId=${coupon.id})}" method="post"
+							class="mt-2">
+							<input type="hidden" name="quantity" value="1">
+							<button type="submit" class="btn btn-primary">Collect</button>
+						</form>
+					</div>
+				</div>
 
-        <!-- Pagination -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/publicCoupons(page=${currentPage - 1})}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == currentPage} ? 'active'">
-                    <a class="page-link" th:href="@{/publicCoupons(page=${i})}" th:text="${i}">1</a>
-                </li>
-                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                    <a class="page-link" th:href="@{/publicCoupons(page=${currentPage + 1})}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+				<!-- Coupon Details Modal -->
+				<div class="modal fade" th:id="'couponModal' + ${coupon.id}" tabindex="-1" role="dialog"
+					aria-labelledby="couponModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" th:text="${coupon.vendor.name} + ' Coupon Details'"></h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p th:text="${coupon.description}"></p>
+								<p><strong>Expires on:</strong> <span
+										th:text="${#dates.format(coupon.expiryDate, 'MMMM dd, yyyy')}"></span></p>
+								<p><strong>Public Quantity:</strong> <span th:text="${coupon.publicQuantity}"></span>
+								</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								<form id="collect-form-modal" th:action="@{/cart/add/{couponId}(couponId=${coupon.id})}"
+									method="post">
+									<input type="hidden" name="quantity" value="1">
+									<button type="submit" class="btn btn-primary">Collect</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
 
-    <div th:replace="fragment/footer"></div>
+			</div>
+		</div>
+
+		<!-- Pagination -->
+		<nav aria-label="Page navigation">
+			<ul class="pagination justify-content-center">
+				<li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+					<a class="page-link" th:href="@{/publicCoupons(page=${currentPage - 1})}" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+				<li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
+					th:classappend="${i == currentPage} ? 'active'">
+					<a class="page-link" th:href="@{/publicCoupons(page=${i})}" th:text="${i}">1</a>
+				</li>
+				<li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+					<a class="page-link" th:href="@{/publicCoupons(page=${currentPage + 1})}" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+	<div th:replace="fragment/footer"></div>
+
+	<!-- Bootstrap JS and dependencies -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
