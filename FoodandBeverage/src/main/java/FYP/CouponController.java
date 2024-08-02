@@ -82,7 +82,7 @@ public class CouponController {
         coupon.setIssueDate(new Date()); // Set the issue date to the current date
         coupon.setExpiryDate(calculateExpiryDate(coupon.getIssueDate()));
         
-        // Set the vendor ID to the logged-in vendor
+        // Set the vendor ID to the logged-in vendors
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof VendorDetails) {
             VendorDetails vendorDetails = (VendorDetails) principal;
