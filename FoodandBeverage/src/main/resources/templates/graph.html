@@ -1,34 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embedded Power BI Report</title>
+    <title>Couponify - Graph</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
-        /* Optional: Add some basic styling */
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 90vh;
-            background-color: #f4f4f4;
-        }
-        iframe {
-            border: none;
+            background-color: #d2b48c !important; /* Darker beige */
+            background-size: cover;
+            background-position: center center;
+            background-repeat: repeat-y;
+            background-attachment: fixed;
         }
     </style>
 </head>
 <body>
-    <h1>Power BI Report</h1>
-    <iframe
-        title="Test1"
-        width="1140"
-        height="541.25"
-        src="https://app.powerbi.com/reportEmbed?reportId=582583cf-9f82-48f3-9f63-7a574fcd2bdd&autoAuth=true&ctid=f688b0d0-79f0-40a4-8644-35fcdee9d0f3"
-        frameborder="0"
-        allowFullScreen="true">
-    </iframe>
+    <div th:replace="fragment/header"></div>
+    <br>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>Graphs</h2>
+        </div>
+        <iframe
+            title="Test1"
+            width="1140"
+            height="541.25"
+            src="https://app.powerbi.com/reportEmbed?reportId=d9879806-ea0e-4a1f-99d4-5a71c131e477&autoAuth=true&ctid=f688b0d0-79f0-40a4-8644-35fcdee9d0f3"
+            frameborder="0"
+            allowFullScreen="true">
+        </iframe>
+    </div>
 </body>
 </html>
